@@ -424,6 +424,7 @@ let step = 0;
 let answers = QUESTIONS.map(() => []);
 let loadingInterval;
 let lastAIResult = null; 
+let userProfileText = '';
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -513,7 +514,8 @@ function startLoadingAnimation() {
 async function submitQuiz() {
   showScreen('s-loading');
   startLoadingAnimation();
-  const profile = buildProfile();
+  userProfileText = buildProfile(); // <-- ДОБАВИТЬ ЭТО
+  const profile = userProfileText;
 
   try {
     // ИЗМЕНЕН URL ДЛЯ CLOUDFLARE PAGES
@@ -646,22 +648,47 @@ function fakePayment() {
   showScreen('s-home');
 }
 
-function sendChatMessage(text) {
+async function sendChatMessage(text) {
   const chatBody = document.getElementById('chatBody');
+  
+  // Удаляем подсказки-чипы после первого клика
   const chips = document.querySelector('.chat-chips');
   if (chips) chips.remove();
   const sub = document.querySelector('.chat-sub');
   if (sub) sub.remove();
 
+  // Добавляем сообщение пользователя
   chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+  
+  // Имитация набора текста ИИ
   const typingId = 'typing-' + Date.now();
   chatBody.innerHTML += `<div class="chat-bubble ai" id="${typingId}">Печатает...</div>`;
-  chatBody.scrollTop = chatBody.scrollHeight;
+  chatBody.scrollTop = chatBody.scrollHeight; // Скролл вниз
 
-  setTimeout(() => {
-    document.getElementById(typingId).textContent = "Отличный вопрос! Как ваш AI-помощник, я советую обратить внимание на мягкие очищающие средства и не забывать про SPF. Подробнее я смогу рассказать после полного анализа вашей кожи 💖";
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }, 1500);
+  try {
+    // Реальный запрос к нашему Cloudflare API
+    const res = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        question: text, 
+        profile: userProfileText,
+        summary: lastAIResult?.profile_summary || '' // Передаем резюме из прошлого анализа
+      })
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
+
+    // Заменяем "Печатает..." на реальный ответ
+    document.getElementById(typingId).textContent = data.reply;
+    
+  } catch (e) {
+    document.getElementById(typingId).textContent = "Ой, произошла ошибка на сервере 😔 Попробуйте еще раз.";
+  }
+  
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 function sendChatFromInput() {
