@@ -226,19 +226,49 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .step-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .step-tag { background: var(--bg2); border: 0.5px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 11px; color: var(--accent2); }
 .step-buy { font-size: 12px; color: var(--text3); margin-top: 8px; }
+
+/* ── PREMIUM ANIMATIONS ── */
+.screen { opacity: 0; transition: opacity 0.3s ease-in-out; }
+.screen.active { display: flex; }
+.screen.visible { opacity: 1; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: slideUp 0.4s ease forwards; }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(201, 169, 110, 0.3); }
+  100% { transform: scale(1); }
+}
+.pulse-once { animation: pulse 0.6s ease; }
+
+/* PHOTO UX */
+.photo-body { flex: 1; padding: 20px 24px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.face-guide { margin-bottom: 24px; position: relative; }
+.photo-rules { width: 100%; max-width: 300px; margin-bottom: 32px; }
+.rule { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 8px; text-align: left; display: flex; align-items: center; gap: 8px; }
+.rule.good { background: var(--green-bg); color: #7ab893; border: 0.5px solid var(--green); }
+.rule.bad { background: var(--red-bg); color: #e88; border: 0.5px solid var(--red); }
+.face-preview-container { width: 240px; height: 300px; margin: 0 auto 24px; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--border); background: var(--bg2); }
+.face-guide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+
 </style>
 </head>
 <body>
 
 <!-- SPLASH -->
-<div id="s-splash" class="screen active">
+<div id="s-splash" class="screen active visible">
   <div class="splash-top">
     <div class="splash-logo">BeautyMe AI</div>
     <div class="splash-title">Кожа, которая <em>нравится</em> тебе в зеркале ✨</div>
     <div class="splash-sub">AI-помощник для красивой кожи: анализ, уход и отслеживание прогресса.</div>
   </div>
   <div class="splash-bottom">
-    <button class="btn-primary" onclick="startQuiz()">Перейти в приложение</button>
+        <button class="btn-primary" onclick="showScreen('s-photo')">Сканировать по фото 📸</button>
+    <button class="btn-outline" onclick="startQuiz()" style="margin-top: 10px; color: var(--accent2); border-color: var(--accent);">Пройти тест</button>
     <button id="installBtn" class="install-banner" onclick="installApp()">Установить приложение 📲</button>
     <div id="iosHint" class="ios-hint">📲 Чтобы добавить на рабочий стол, нажмите <b>Поделиться</b> <span style="font-size:14px;">⬆️</span> и выберите <b>На экран Домой</b></div>
     <div class="splash-note">Уже более 50 000 девушек начали путь к лучшей коже</div>
@@ -260,6 +290,51 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="quiz-footer">
     <button class="btn-back" id="qBack" onclick="prevStep()">←</button>
     <button class="btn-next" id="qNext" onclick="nextStep()" disabled>Далее</button>
+  </div>
+</div>
+
+
+<!-- PHOTO SCAN -->
+<!-- PHOTO SCAN -->
+<div id="s-photo" class="screen">
+  <div class="screen-header-center">Сканирование кожи 📸</div>
+  <div class="photo-body">
+    
+    <!-- ЭКРАН ИНСТРУКЦИЙ (до фото) -->
+    <div id="photoInstructions" style="display: flex; flex-direction: column; align-items: center;">
+      <div class="face-guide">
+        <svg viewBox="0 0 200 260" width="160">
+          <ellipse cx="100" cy="120" rx="70" ry="95" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="8 4" opacity="0.6"/>
+          <text x="100" y="260" fill="var(--text3)" font-size="12" text-anchor="middle" font-family="var(--sans)">Совместите лицо</text>
+        </svg>
+      </div>
+
+      <div class="photo-rules">
+        <div class="rule good"><span>💡</span> Хорошее освещение (желательно у окна)</div>
+        <div class="rule good"><span>🧼</span> Чистое лицо без макияжа и кремов</div>
+        <div class="rule bad"><span>🚫</span> Тени и плохой свет</div>
+        <div class="rule bad"><span>🚫</span> Фильтры и косметика</div>
+      </div>
+
+      <input type="file" id="photoInput" accept="image/*" capture="user" style="display: none;" onchange="handlePhotoUpload(event)">
+      <button class="btn-primary" onclick="document.getElementById('photoInput').click()" style="max-width: 300px;">Сделать селфи</button>
+      <button class="btn-ghost" onclick="showScreen('s-splash')">Назад</button>
+    </div>
+
+    <!-- ЭКРАН ПРЕДПРОСМОТРА (после фото) -->
+    <div id="photoPreviewWrap" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+      <div class="face-preview-container">
+        <img id="photoPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="face-guide-overlay">
+          <svg viewBox="0 0 200 260" width="140" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <ellipse cx="100" cy="120" rx="70" ry="95" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="8 4" opacity="0.8"/>
+          </svg>
+        </div>
+      </div>
+      <button class="btn-primary" style="background: var(--green); max-width: 300px;" onclick="submitPhotoAnalysis()">Анализировать кожу ✨</button>
+      <button class="btn-ghost" onclick="resetPhoto()" style="margin-top: 8px;">Переснять</button>
+    </div>
+
   </div>
 </div>
 
@@ -424,6 +499,82 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 </div>
 
 <script>
+
+// Обработка загрузки фото
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imgSrc = e.target.result;
+    // Показываем превью
+    document.getElementById('photoPreviewImg').src = imgSrc;
+    // Сохраняем Base64
+    window.uploadedPhotoBase64 = imgSrc.split(',')[1]; 
+    
+    // Переключаем экраны
+    document.getElementById('photoInstructions').style.display = 'none';
+    document.getElementById('photoPreviewWrap').style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+// Сброс фото (переснять)
+function resetPhoto() {
+  document.getElementById('photoInput').value = ''; // Очищаем input
+  window.uploadedPhotoBase64 = null;
+  document.getElementById('photoInstructions').style.display = 'flex';
+  document.getElementById('photoPreviewWrap').style.display = 'none';
+}
+
+// Отправка фото на анализ
+async function submitPhotoAnalysis() {
+  showScreen('s-loading');
+  startLoadingAnimation();
+  document.getElementById('loadingStep').textContent = "Сканируем фото...";
+
+  try {
+    const res = await fetch('/analyze-photo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image_base64: window.uploadedPhotoBase64 })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `Ошибка сервера: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (!data.result) throw new Error('Пустой ответ от сервера');
+    const result = JSON.parse(data.result);
+    
+    clearInterval(loadingInterval);
+    lastAIResult = result;
+    userProfileText = "Анализ проведен по фотографии пользователя";
+    
+    localStorage.setItem('beautyme_result', JSON.stringify(result));
+    localStorage.setItem('beautyme_profile', userProfileText);
+
+    let history = JSON.parse(localStorage.getItem('beautyme_history') || '[]');
+    history.push({ score: result.skin_score, date: new Date().toLocaleDateString('ru-RU') });
+    if (history.length > 5) history = history.slice(-5);
+    localStorage.setItem('beautyme_history', JSON.stringify(history));
+
+    if (localStorage.getItem('beautyme_premium') === 'true') {
+      fakePayment(); 
+    } else {
+      renderResult(result);
+    }
+
+  } catch (e) {
+    clearInterval(loadingInterval);
+    document.getElementById('errorMsg').textContent = e.message;
+    showScreen('s-error');
+  }
+}
+
 // ─── QUESTIONS ───────────────────────────────────────────────
 const QUESTIONS = [
   { q: "Какой у тебя тип кожи?", hint: "Не уверена? Жирная — если блестит к полудню без крема.", opts: ["Жирная","Сухая","Комбинированная","Нормальная","Чувствительная"], multi: false },
@@ -442,8 +593,32 @@ let lastAIResult = null;
 let userProfileText = ''; 
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  // Скрываем текущий экран
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('visible');
+    s.classList.remove('active');
+  });
+  
+  // Показываем новый с плавной анимацией
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  // Небольшая задержка для срабатывания CSS перехода
+  setTimeout(() => el.classList.add('visible'), 20);
+}
+
+// Анимация набора числа (как в казино)
+function animateScore(elementId, targetScore) {
+  const el = document.getElementById(elementId);
+  let current = 0;
+  const step = Math.max(1, Math.ceil(targetScore / 30)); // Набор за ~30 шагов
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= targetScore) {
+      current = targetScore;
+      clearInterval(interval);
+    }
+    el.textContent = current;
+  }, 30);
 }
 
 function switchTab(screenId, btnElement) {
@@ -589,7 +764,7 @@ function renderResult(r) {
   let html = `
     <div class="score-card">
       <div class="score-circle">
-        <div class="score-num">${score}</div>
+        <div class="score-num" id="scoreNum">0</div>
         <div class="score-total">/ 100</div>
       </div>
       <div class="score-text">Кожа выглядит лучше, чем вы думаете — и у неё есть хороший потенциал для улучшения.</div>
@@ -621,12 +796,17 @@ function renderResult(r) {
       </div>
     </div>
     <button class="btn-outline" onclick="shareScore(${score})" style="margin-top: 24px;">Поделиться результатом ✨</button>
-    <button class="btn-outline" onclick="startQuiz()" style="margin-top: 8px; color: var(--text3); border-color: transparent;">Пройти тест заново</button>
+    
     <div class="disclaimer">Рекомендации BeautyMe AI носят информационный характер и не являются медицинской консультацией.</div>
   `;
 
-  document.getElementById('resultBody').innerHTML = html;
+   document.getElementById('resultBody').innerHTML = html;
   showScreen('s-result');
+  
+  // Запускаем анимацию цифр после показа экрана
+  setTimeout(() => {
+    animateScore('scoreNum', score);
+  }, 400);
 }
 
 async function shareScore(score) {
@@ -708,7 +888,7 @@ function fakePayment() {
   if (lastAIResult) {
     const score = lastAIResult.skin_score || 63;
     document.getElementById('homeScoreVal').innerHTML = `${score} <span class="hs-up">new</span>`;
-    document.getElementById('homeScoreCircle').textContent = score;
+    document.getElementById('homeScoreCircle').textContent = '0';
     
     if (lastAIResult.pro_tip) {
       document.getElementById('homeProTip').textContent = lastAIResult.pro_tip;
@@ -796,6 +976,20 @@ function fakePayment() {
 
   document.getElementById('bottomNav').classList.remove('hidden');
   showScreen('s-home');
+  
+  // Запускаем анимацию набора Skin Score на главном экране
+  setTimeout(() => {
+    const circleEl = document.getElementById('homeScoreCircle');
+    circleEl.classList.add('pulse-once'); // Пульсация кружка
+    animateScore('homeScoreCircle', lastAIResult?.skin_score || 63);
+    
+    // Плавное появление карточек ухода
+    const cards = document.querySelectorAll('#homeRoutineList .routine-step');
+    cards.forEach((card, index) => {
+      card.style.opacity = '0';
+      setTimeout(() => card.classList.add('animate-in'), 100 * index);
+    });
+  }, 400);
 }
 
 // Функция отмены подписки
