@@ -133,7 +133,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .home-header { padding: 24px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border); }
 .home-greeting { font-family: var(--serif); font-size: 22px; color: var(--text); }
 .home-sub-greeting { font-size: 13px; color: var(--text3); margin-top: 4px; }
-.home-body { padding: 20px 20px 100px; overflow-y: auto; }
+.home-body { padding: 20px 20px 120px; overflow-y: auto; }
 .home-score-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .hs-left { flex: 1; }
 .hs-label { font-size: 13px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
@@ -161,7 +161,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .screen-header-center { padding: 24px 24px 16px; text-align: center; font-family: var(--serif); font-size: 22px; color: var(--text); border-bottom: 0.5px solid var(--border); }
 
 /* PROGRESS */
-.progress-body { padding: 24px 20px 160px; } /* Увеличен отступ снизу */
+#s-progress { overflow-y: auto; }
+.progress-body { padding: 24px 20px 140px; }
 .prog-sub { font-size: 14px; color: var(--text3); margin-bottom: 24px; text-align: center; }
 .prog-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
 .prog-card-title { font-size: 13px; color: var(--text2); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .08em; }
@@ -182,7 +183,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .chat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .chip { padding: 8px 14px; border-radius: 20px; background: var(--bg2); border: 0.5px solid var(--border); color: var(--accent2); font-family: var(--sans); font-size: 12px; cursor: pointer; }
 .chip:active { background: #2a2010; }
-.chat-input-area { padding: 12px 20px 100px; background: var(--bg); border-top: 0.5px solid var(--border); display: flex; gap: 10px; align-items: center; }
+.chat-input-area { padding: 12px 20px 120px; background: var(--bg); border-top: 0.5px solid var(--border); display: flex; gap: 10px; align-items: center; }
 .chat-input { flex: 1; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--text); font-family: var(--sans); font-size: 14px; outline: none; }
 .chat-input:focus { border-color: var(--accent); }
 .chat-send { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); border: none; color: #1a1208; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
