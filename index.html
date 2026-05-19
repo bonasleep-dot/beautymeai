@@ -649,6 +649,24 @@ async function shareScore(score) {
   }
 }
 
+function updateRoutineProgress() {
+  const checks = document.querySelectorAll('#homeRoutineList input[type="checkbox"]');
+  const total = checks.length;
+  const checked = Array.from(checks).filter(c => c.checked).length;
+  
+  const progEl = document.getElementById('routineProgress');
+  if (progEl) progEl.textContent = `${checked}/${total}`;
+
+  const baseScore = lastAIResult?.skin_score || 63;
+  const scoreValEl = document.getElementById('homeScoreVal');
+  
+  if (checked === total && total > 0) {
+    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">+2 🔥</span>`;
+  } else {
+    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
+  }
+}
+    
 function fakePayment() {
   const hour = new Date().getHours();
   let greet = "Доброе утро ✨";
@@ -657,7 +675,7 @@ function fakePayment() {
   else if (hour >= 23 || hour < 5) greet = "Доброй ночи 🌙";
   document.getElementById('greetingText').textContent = greet;
   
-  // Обновляем счет на главном экране на реальный от ИИ
+  // Обновляем счет на главном экране
   if (lastAIResult) {
     const score = lastAIResult.skin_score || 63;
     document.getElementById('homeScoreVal').innerHTML = `${score} <span class="hs-up">new</span>`;
@@ -668,25 +686,71 @@ function fakePayment() {
     }
   }
 
-    function updateRoutineProgress() {
-  // Считаем чекбоксы
-  const checks = document.querySelectorAll('#homeRoutineList input[type="checkbox"]');
-  const total = checks.length;
-  const checked = Array.from(checks).filter(c => c.checked).length;
-  
-  // Обновляем текст прогресса
-  const progEl = document.getElementById('routineProgress');
-  if (progEl) progEl.textContent = `${checked}/${total}`;
+  // Отрисовываем реальный уход
+  const routineList = document.getElementById('homeRoutineList');
+  if (lastAIResult && routineList) {
+    let html = '<span id="routineProgress" style="float:right; color:var(--accent); font-size:12px;">0/0</span>';
+    
+    if (lastAIResult.morning_routine?.length) {
+      html += `<div class="routine-block"><div class="routine-title">☀ Утро</div>`;
+      lastAIResult.morning_routine.forEach(p => {
+        html += `
+        <div class="routine-step" onclick="this.classList.toggle('open')">
+          <div class="step-header">
+            <input type="checkbox" onclick="event.stopPropagation(); updateRoutineProgress();">
+            <div class="step-info">
+              <span class="step-name">${p.step_name || 'Шаг'}</span>
+              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
+            </div>
+            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
+            <span class="step-arrow">▼</span>
+          </div>
+          <div class="step-details">
+            <div class="step-why">${p.why || ''}</div>
+            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
+            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
 
-  // Бустим Skin Score, если всё выполнено
-  const baseScore = lastAIResult?.skin_score || 63;
-  const scoreValEl = document.getElementById('homeScoreVal');
-  
-  if (checked === total && total > 0) {
-    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">+2 🔥</span>`;
-  } else {
-    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
+    if (lastAIResult.evening_routine?.length) {
+      html += `<div class="routine-block"><div class="routine-title">🌙 Вечер</div>`;
+      lastAIResult.evening_routine.forEach(p => {
+        html += `
+        <div class="routine-step" onclick="this.classList.toggle('open')">
+          <div class="step-header">
+            <input type="checkbox" onclick="event.stopPropagation(); updateRoutineProgress();">
+            <div class="step-info">
+              <span class="step-name">${p.step_name || 'Шаг'}</span>
+              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
+            </div>
+            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
+            <span class="step-arrow">▼</span>
+          </div>
+          <div class="step-details">
+            <div class="step-why">${p.why || ''}</div>
+            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
+            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (lastAIResult.total_cost_rub) {
+       html += `<div style="text-align:right; font-size:13px; color:var(--text3); margin-top:8px;">Итого: ~${lastAIResult.total_cost_rub} ₽/мес</div>`;
+    }
+
+    routineList.innerHTML = html;
+    
+    // Сразу обновляем счетчик после отрисовки
+    updateRoutineProgress();
   }
+
+  document.getElementById('bottomNav').classList.remove('hidden');
+  showScreen('s-home');
 }
 
     // Отрисовываем реальный уход (Красивые карточки)
