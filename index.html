@@ -1,3 +1,5 @@
+<!-- Твой HTML, но с нужными правками. Скопируй целиком -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,7 +9,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <link rel="apple-touch-icon" href="icon.png">
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
@@ -16,12 +17,7 @@
     for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
     k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
- 
-    ym(109291017, "init", {
-         clickmap:true,
-         trackLinks:true,
-         accurateTrackBounce:true
-    });
+    ym(109291017, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/109291017" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
@@ -30,153 +26,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f0f0f;
-  --bg2: #1a1a1a;
-  --bg3: #242424;
-  --border: #2e2e2e;
-  --text: #f0ede8;
-  --text2: #9a9590;
-  --text3: #5a5550;
-  --accent: #c9a96e;
-  --accent2: #e8d5b0;
-  --green: #4a8c6a;
-  --green-bg: #1a2e22;
-  --red: #c05050;
-  --red-bg: #2e1a1a;
+  --bg: #0f0f0f; --bg2: #1a1a1a; --bg3: #242424; --border: #2e2e2e;
+  --text: #f0ede8; --text2: #9a9590; --text3: #5a5550;
+  --accent: #c9a96e; --accent2: #e8d5b0;
+  --green: #4a8c6a; --green-bg: #1a2e22;
+  --red: #c05050; --red-bg: #2e1a1a;
   --serif: 'Playfair Display', Georgia, serif;
   --sans: 'DM Sans', system-ui, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { background: var(--bg); }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100dvh;
-  max-width: 430px;
-  margin: 0 auto;
-  position: relative;
-  overflow-x: hidden;
-}
-
+body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100dvh; max-width: 430px; margin: 0 auto; position: relative; overflow-x: hidden; }
 .screen { display: none; min-height: 100dvh; flex-direction: column; }
 .screen.active { display: flex; }
 
-/* ── SPLASH ── */
-#s-splash {
-  justify-content: space-between;
-  padding: 0;
-  background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 60%);
-  height: 100dvh; /* Жестко фиксируем на один экран */
-}
-.splash-top {
-  padding: 60px 28px 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.splash-logo {
-  font-family: var(--serif);
-  font-size: 16px;
-  letter-spacing: .2em;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 32px;
-}
-.splash-title {
-  font-family: var(--serif);
-  font-size: 34px;
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 16px;
-}
+/* SPLASH */
+#s-splash { justify-content: space-between; padding: 0; background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 60%); height: 100dvh; }
+.splash-top { padding: 60px 28px 0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.splash-logo { font-family: var(--serif); font-size: 16px; letter-spacing: .2em; color: var(--accent); text-transform: uppercase; margin-bottom: 32px; }
+.splash-title { font-family: var(--serif); font-size: 34px; line-height: 1.15; color: var(--text); margin-bottom: 16px; }
 .splash-title em { color: var(--accent); font-style: italic; }
-.splash-sub {
-  font-size: 15px;
-  color: var(--text2);
-  line-height: 1.5;
-  max-width: 300px;
-}
+.splash-sub { font-size: 15px; color: var(--text2); line-height: 1.5; max-width: 300px; }
 .splash-bottom { padding: 20px 28px 36px; text-align: center; }
 .splash-note { font-size: 12px; color: var(--text3); margin-top: 16px; }
-.splash-features {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 320px;
-  margin-bottom: 40px;
-}
-.feat-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  color: var(--text2);
-}
+.splash-features { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 40px; }
+.feat-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text2); }
 .feat-icon { font-size: 20px; }
 .splash-bottom { padding: 28px; text-align: center; }
 .splash-note { font-size: 13px; color: var(--text3); margin-top: 16px; }
+.install-banner { display: none; margin-top: 16px; padding: 12px; border-radius: 12px; border: 0.5px solid var(--accent); background: #2a2010; color: var(--accent2); font-size: 14px; cursor: pointer; width: 100%; text-align: center; font-family: var(--sans); }
+.ios-hint { display: none; font-size: 12px; color: var(--accent2); margin-top: 12px; line-height: 1.5; background: var(--bg2); padding: 10px; border-radius: 10px; border: 0.5px solid var(--border); }
 
-.install-banner {
-  display: none;
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 0.5px solid var(--accent);
-  background: #2a2010;
-  color: var(--accent2);
-  font-size: 14px;
-  cursor: pointer;
-  width: 100%;
-  text-align: center;
-  font-family: var(--sans);
-}
-.ios-hint {
-  display: none;
-  font-size: 12px;
-  color: var(--accent2); /* Изменили цвет на золотой, чтобы было заметнее */
-  margin-top: 12px;
-  line-height: 1.5;
-  background: var(--bg2);
-  padding: 10px;
-  border-radius: 10px;
-  border: 0.5px solid var(--border);
-}
-
-/* ── BUTTONS ── */
-.btn-primary {
-  width: 100%;
-  padding: 18px;
-  border-radius: 14px;
-  background: var(--accent);
-  color: #1a1208;
-  font-family: var(--sans);
-  font-size: 16px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  letter-spacing: .02em;
-  transition: opacity .15s;
-}
+/* BUTTONS */
+.btn-primary { width: 100%; padding: 18px; border-radius: 14px; background: var(--accent); color: #1a1208; font-family: var(--sans); font-size: 16px; font-weight: 500; border: none; cursor: pointer; letter-spacing: .02em; transition: opacity .15s; }
 .btn-primary:active { opacity: .85; }
-.btn-outline {
-  width: 100%;
-  padding: 17px;
-  border-radius: 14px;
-  border: 0.5px solid var(--border);
-  background: transparent;
-  color: var(--text2);
-  font-family: var(--sans);
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 10px;
-}
+.btn-outline { width: 100%; padding: 17px; border-radius: 14px; border: 0.5px solid var(--border); background: transparent; color: var(--text2); font-family: var(--sans); font-size: 15px; cursor: pointer; margin-top: 10px; }
 
-/* ── QUIZ ── */
+/* QUIZ */
 #s-quiz { padding: 0; }
 .quiz-header { padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between; }
 .quiz-logo { font-family: var(--serif); font-size: 13px; color: var(--accent); letter-spacing: .15em; }
@@ -189,16 +75,8 @@ body {
 .q-text { font-family: var(--serif); font-size: 24px; line-height: 1.3; color: var(--text); margin-bottom: 6px; }
 .q-hint { font-size: 13px; color: var(--text3); margin-bottom: 24px; line-height: 1.5; }
 .options { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.opt-btn {
-  width: 100%; text-align: left; padding: 14px 18px; border-radius: 12px;
-  border: 0.5px solid var(--border); background: var(--bg2); color: var(--text2);
-  font-family: var(--sans); font-size: 14px; cursor: pointer; transition: all .15s;
-  display: flex; align-items: center; gap: 12px;
-}
-.opt-btn .check {
-  width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border);
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s;
-}
+.opt-btn { width: 100%; text-align: left; padding: 14px 18px; border-radius: 12px; border: 0.5px solid var(--border); background: var(--bg2); color: var(--text2); font-family: var(--sans); font-size: 14px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 12px; }
+.opt-btn .check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .opt-btn.sel { border-color: var(--accent); background: #2a2010; color: var(--accent2); }
 .opt-btn.sel .check { background: var(--accent); border-color: var(--accent); }
 .opt-btn.sel .check::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #1a1208; }
@@ -208,71 +86,40 @@ body {
 .btn-next:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
 .btn-next:not(:disabled):active { opacity: .85; }
 
-/* ── LOADING ── */
-#s-loading {
-  justify-content: center; align-items: center; gap: 24px;
-  background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 70%);
-  padding: 40px;
-}
+/* LOADING */
+#s-loading { justify-content: center; align-items: center; gap: 24px; background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 70%); padding: 40px; }
 .loading-icon { width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid var(--border); border-top-color: var(--accent); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-title { font-family: var(--serif); font-size: 22px; color: var(--text); text-align: center; }
 .loading-sub { font-size: 14px; color: var(--text3); text-align: center; transition: opacity .3s; min-height: 40px; }
 
-/* ── RESULT (SKIN SCORE) ── */
+/* RESULT */
 #s-result { padding: 0; overflow-y: auto; background: var(--bg); }
-.result-header {
-  padding: 24px 24px 20px; background: linear-gradient(180deg, #1a1208 0%, transparent 100%);
-  position: sticky; top: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  z-index: 10; border-bottom: 0.5px solid var(--border); text-align: center;
-}
+.result-header { padding: 24px 24px 20px; background: linear-gradient(180deg, #1a1208 0%, transparent 100%); position: sticky; top: 0; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10; border-bottom: 0.5px solid var(--border); text-align: center; }
 .result-logo { font-family: var(--serif); font-size: 13px; color: var(--accent); letter-spacing: .15em; margin-bottom: 4px; }
 .result-title { font-family: var(--serif); font-size: 20px; color: var(--text); }
 .result-body { padding: 24px 20px 40px; }
-
-.score-card {
-  background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px;
-  padding: 24px; text-align: center; margin-bottom: 24px;
-}
-.score-circle {
-  width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--border);
-  margin: 0 auto 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: radial-gradient(circle, #1a1208 0%, var(--bg2) 100%);
-}
+.score-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px; }
+.score-circle { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--border); margin: 0 auto 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #1a1208 0%, var(--bg2) 100%); }
 .score-num { font-family: var(--serif); font-size: 36px; color: var(--accent); line-height: 1; }
 .score-total { font-size: 12px; color: var(--text3); }
 .score-text { font-size: 14px; color: var(--text2); line-height: 1.5; }
-
 .tags-section { margin-bottom: 20px; }
 .tags-title { font-size: 13px; color: var(--text2); margin-bottom: 10px; font-weight: 500; }
 .tag-warn { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--red-bg); color: #e88; border: 0.5px solid var(--red); margin-right: 6px; margin-bottom: 6px; }
 .tag-good { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--green-bg); color: #7ab893; border: 0.5px solid var(--green); margin-right: 6px; margin-bottom: 6px; }
-
-.blur-container {
-  position: relative; margin-top: 32px; overflow: hidden; border-radius: 16px;
-}
-.blur-content {
-  filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7;
-  background: var(--bg2); padding: 20px;
-}
+.blur-container { position: relative; margin-top: 32px; overflow: hidden; border-radius: 16px; }
+.blur-content { filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7; background: var(--bg2); padding: 20px; }
 .blur-fake-item { height: 16px; background: var(--bg3); border-radius: 8px; margin-bottom: 12px; width: 80%; }
 .blur-fake-item:last-child { width: 60%; }
-.paywall-overlay {
-  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(2px); padding: 24px; text-align: center;
-}
+.paywall-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(2px); padding: 24px; text-align: center; }
 .paywall-lock { font-size: 32px; margin-bottom: 12px; }
 .paywall-title { font-family: var(--serif); font-size: 20px; color: var(--text); margin-bottom: 8px; }
 .paywall-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
-
 .disclaimer { font-size: 13px; color: var(--text3); line-height: 1.5; margin-top: 24px; text-align: center; }
 
-/* ── PAYWALL ── */
-#s-paywall {
-  justify-content: space-between; padding: 0;
-  background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 70%);
-}
+/* PAYWALL */
+#s-paywall { justify-content: space-between; padding: 0; background: linear-gradient(160deg, #1a1208 0%, #0f0f0f 70%); }
 .pw-top { padding: 56px 28px 0; flex: 1; text-align: center; }
 .pw-title { font-family: var(--serif); font-size: 26px; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
 .pw-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; line-height: 1.6; }
@@ -283,115 +130,42 @@ body {
 .pw-price-note { font-size: 13px; color: var(--text2); margin-top: 16px; line-height: 1.5; }
 .pw-small { font-size: 11px; color: var(--text3); margin-top: 12px; }
 
-/* ── HOME ── */
+/* HOME */
 #s-home { padding: 0; background: var(--bg); }
-.home-header {
-  padding: 24px 24px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 0.5px solid var(--border);
-}
+.home-header { padding: 24px 24px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border); }
 .home-greeting { font-family: var(--serif); font-size: 22px; color: var(--text); }
 .home-sub-greeting { font-size: 13px; color: var(--text3); margin-top: 4px; }
 .home-body { padding: 20px 20px 100px; overflow-y: auto; }
-
-.home-score-card {
-  background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px;
-  padding: 20px; display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 20px;
-}
+.home-score-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .hs-left { flex: 1; }
 .hs-label { font-size: 13px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
 .hs-val { font-family: var(--serif); font-size: 36px; color: var(--accent); line-height: 1; margin-bottom: 8px; }
 .hs-up { color: var(--green); font-size: 20px; }
 .hs-text { font-size: 13px; color: var(--text2); line-height: 1.4; }
-.hs-circle-mini {
-  width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-size: 22px; color: var(--accent); flex-shrink: 0;
-}
-
-.home-routine-card, .home-tip-card {
-  background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px;
-  padding: 20px; margin-bottom: 16px;
-}
+.hs-circle-mini { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; color: var(--accent); flex-shrink: 0; }
+.home-routine-card, .home-tip-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
 .routine-block { margin-bottom: 16px; }
 .routine-block:last-child { margin-bottom: 0; }
 .routine-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
-.routine-item {
-  display: flex; align-items: center; gap: 12px;
-  font-size: 14px; color: var(--text2); margin-bottom: 8px; cursor: pointer;
-}
-.routine-item input[type="checkbox"] {
-  appearance: none; width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--border); background: var(--bg3); cursor: pointer; flex-shrink: 0;
-}
-.routine-item input[type="checkbox"]:checked {
-  background: var(--accent); border-color: var(--accent);
-}
+.routine-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text2); margin-bottom: 8px; cursor: pointer; }
+.routine-item input[type="checkbox"] { appearance: none; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--bg3); cursor: pointer; flex-shrink: 0; }
+.routine-item input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
 .tip-text { font-size: 14px; color: var(--text2); line-height: 1.5; }
 
-/* ── BOTTOM NAV ── */
-.bottom-nav {
-  position: fixed; 
-  bottom: 20px; /* Отступ от нижнего края, чтобы панель парила */
-  left: 50%; 
-  transform: translateX(-50%);
-  width: calc(100% - 40px); /* Отступы по бокам */
-  max-width: 390px; 
-  background: rgba(26, 26, 26, 0.85); /* Полупрозрачный фон */
-  backdrop-filter: blur(20px); /* Эффект матового стекла */
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 0.5px solid var(--border);
-  display: flex; 
-  z-index: 100;
-  padding: 12px 0;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Плавная тень */
-}
-.nav-btn {
-  flex: 1; 
-  border: none; 
-  background: transparent;
-  color: var(--text3); 
-  font-family: var(--sans); 
-  font-size: 10px; 
-  cursor: pointer;
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  gap: 4px; 
-  transition: color .2s;
-}
-.nav-btn svg {
-  width: 22px; 
-  height: 22px; 
-  fill: currentColor; /* Иконка принимает цвет текста */
-}
-.nav-btn.active { 
-  color: var(--accent); /* Активная иконка становится золотой */
-}
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 390px; background: rgba(26, 26, 26, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; border: 0.5px solid var(--border); display: flex; z-index: 100; padding: 12px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.nav-btn { flex: 1; border: none; background: transparent; color: var(--text3); font-family: var(--sans); font-size: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color .2s; }
+.nav-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.nav-btn.active { color: var(--accent); }
 .hidden { display: none !important; }
 
+/* COMMON HEADER */
+.screen-header-center { padding: 24px 24px 16px; text-align: center; font-family: var(--serif); font-size: 22px; color: var(--text); border-bottom: 0.5px solid var(--border); }
 
-/* ── COMMON HEADER ── */
-.screen-header-center {
-  padding: 24px 24px 16px;
-  text-align: center;
-  font-family: var(--serif);
-  font-size: 22px;
-  color: var(--text);
-  border-bottom: 0.5px solid var(--border);
-}
-
-/* ── PROGRESS ── */
+/* PROGRESS */
 .progress-body { padding: 24px 20px 120px; }
 .prog-sub { font-size: 14px; color: var(--text3); margin-bottom: 24px; text-align: center; }
-.prog-card {
-  background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px;
-  padding: 20px; margin-bottom: 24px;
-}
+.prog-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
 .prog-card-title { font-size: 13px; color: var(--text2); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .08em; }
 .prog-row { display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--text); margin-bottom: 14px; }
 .prog-row:last-child { margin-bottom: 0; }
@@ -400,50 +174,24 @@ body {
 .prog-up { margin-left: auto; color: var(--accent); font-weight: 500; }
 .prog-motivation { font-size: 14px; color: var(--text2); text-align: center; line-height: 1.5; margin-bottom: 32px; }
 
-/* ── CHAT ── */
+/* CHAT */
 #s-chat { background: var(--bg); }
-.chat-body { 
-  flex: 1; padding: 24px 20px 20px; overflow-y: auto; display: flex; flex-direction: column; 
-}
+.chat-body { flex: 1; padding: 24px 20px 20px; overflow-y: auto; display: flex; flex-direction: column; }
 .chat-sub { font-size: 13px; color: var(--text3); text-align: center; margin-bottom: 24px; }
-.chat-bubble {
-  max-width: 85%; padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.5; margin-bottom: 12px;
-}
-.chat-bubble.ai {
-  background: var(--bg2); color: var(--text2); border: 0.5px solid var(--border);
-  border-bottom-left-radius: 4px; align-self: flex-start;
-}
-.chat-bubble.user {
-  background: var(--accent); color: #1a1208;
-  border-bottom-right-radius: 4px; align-self: flex-end;
-}
+.chat-bubble { max-width: 85%; padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
+.chat-bubble.ai { background: var(--bg2); color: var(--text2); border: 0.5px solid var(--border); border-bottom-left-radius: 4px; align-self: flex-start; }
+.chat-bubble.user { background: var(--accent); color: #1a1208; border-bottom-right-radius: 4px; align-self: flex-end; }
 .chat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.chip {
-  padding: 8px 14px; border-radius: 20px; background: var(--bg2); border: 0.5px solid var(--border);
-  color: var(--accent2); font-family: var(--sans); font-size: 12px; cursor: pointer;
-}
+.chip { padding: 8px 14px; border-radius: 20px; background: var(--bg2); border: 0.5px solid var(--border); color: var(--accent2); font-family: var(--sans); font-size: 12px; cursor: pointer; }
 .chip:active { background: #2a2010; }
-
-.chat-input-area {
-  padding: 12px 20px 100px; background: var(--bg); border-top: 0.5px solid var(--border);
-  display: flex; gap: 10px; align-items: center;
-}
-.chat-input {
-  flex: 1; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px;
-  padding: 14px 16px; color: var(--text); font-family: var(--sans); font-size: 14px; outline: none;
-}
+.chat-input-area { padding: 12px 20px 100px; background: var(--bg); border-top: 0.5px solid var(--border); display: flex; gap: 10px; align-items: center; }
+.chat-input { flex: 1; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px; padding: 14px 16px; color: var(--text); font-family: var(--sans); font-size: 14px; outline: none; }
 .chat-input:focus { border-color: var(--accent); }
-.chat-send {
-  width: 48px; height: 48px; border-radius: 50%; background: var(--accent); border: none;
-  color: #1a1208; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-}
+.chat-send { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); border: none; color: #1a1208; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .chat-send:active { opacity: 0.8; }
 
-/* ── RETAIN ── */
-#s-retain {
-  justify-content: space-between; padding: 0;
-  background: linear-gradient(180deg, #0f0f0f 0%, #1a1208 100%);
-}
+/* RETAIN */
+#s-retain { justify-content: space-between; padding: 0; background: linear-gradient(180deg, #0f0f0f 0%, #1a1208 100%); }
 .retain-top { padding: 80px 28px 0; text-align: center; }
 .retain-emoji { font-size: 50px; margin-bottom: 20px; }
 .retain-title { font-family: var(--serif); font-size: 26px; color: var(--text); margin-bottom: 12px; }
@@ -453,15 +201,13 @@ body {
 .retain-price-note { font-size: 13px; color: var(--accent); margin-top: 10px; }
 .btn-ghost { background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; margin-top: 16px; font-family: var(--sans); text-decoration: underline; }
 
-/* ── ERROR ── */
+/* ERROR */
 #s-error { justify-content: center; align-items: center; padding: 40px 28px; gap: 16px; text-align: center; }
 .error-icon { font-size: 40px; }
 .error-title { font-family: var(--serif); font-size: 22px; color: var(--text); }
 .error-msg { font-size: 13px; color: var(--text3); line-height: 1.6; }
 
-@media (min-width: 600px) {
-  body { max-width: 480px; border-left: 0.5px solid var(--border); border-right: 0.5px solid var(--border); }
-}
+@media (min-width: 600px) { body { max-width: 480px; border-left: 0.5px solid var(--border); border-right: 0.5px solid var(--border); } }
 </style>
 </head>
 <body>
@@ -506,7 +252,7 @@ body {
   <div class="loading-sub" id="loadingStep">Это займет около 20 секунд</div>
 </div>
 
-<!-- RESULT (SKIN SCORE) -->
+<!-- RESULT -->
 <div id="s-result" class="screen">
   <div class="result-header">
     <div class="result-logo">BeautyMe AI</div>
@@ -551,34 +297,37 @@ body {
     <div class="home-score-card">
       <div class="hs-left">
         <div class="hs-label">Ваш Skin Score</div>
-        <div class="hs-val">63 <span class="hs-up">↑3</span></div>
+        <div class="hs-val" id="homeScoreVal">63 <span class="hs-up">↑3</span></div>
         <div class="hs-text">Маленький прогресс — всё равно прогресс ✨</div>
       </div>
-      <div class="hs-circle-mini">63</div>
+      <div class="hs-circle-mini" id="homeScoreCircle">63</div>
     </div>
 
     <div class="home-routine-card">
       <div class="section-label">Сегодняшний уход</div>
-      <div class="routine-block">
-        <div class="routine-title">☀ Утро</div>
-        <label class="routine-item"><input type="checkbox"> Очищение</label>
-        <label class="routine-item"><input type="checkbox"> Увлажнение</label>
-        <label class="routine-item"><input type="checkbox"> SPF</label>
-      </div>
-      <div class="routine-block">
-        <div class="routine-title">🌙 Вечер</div>
-        <label class="routine-item"><input type="checkbox"> Очищение</label>
-        <label class="routine-item"><input type="checkbox"> Активный уход</label>
+      <!-- ДОБАВЛЕН ID ДЛЯ РЕНДЕРА УХОДА ОТ ИИ -->
+      <div id="homeRoutineList">
+        <div class="routine-block">
+          <div class="routine-title">☀ Утро</div>
+          <label class="routine-item"><input type="checkbox"> Очищение</label>
+          <label class="routine-item"><input type="checkbox"> Увлажнение</label>
+          <label class="routine-item"><input type="checkbox"> SPF</label>
+        </div>
+        <div class="routine-block">
+          <div class="routine-title">🌙 Вечер</div>
+          <label class="routine-item"><input type="checkbox"> Очищение</label>
+          <label class="routine-item"><input type="checkbox"> Активный уход</label>
+        </div>
       </div>
     </div>
 
     <div class="home-tip-card">
       <div class="tip-label">Совет дня</div>
-      <div class="tip-text">Сегодня коже особенно важно увлажнение 💧</div>
+      <div class="tip-text" id="homeProTip">Сегодня коже особенно важно увлажнение 💧</div>
     </div>
     
     <button class="btn-outline" onclick="startQuiz()" style="margin-top: 10px;">Пройти новый анализ</button>
-	    <button class="btn-ghost" style="margin-top: 20px; color: var(--text3);" onclick="showScreen('s-retain')">Отменить подписку</button>
+    <button class="btn-ghost" style="margin-top: 20px; color: var(--text3);" onclick="showScreen('s-retain')">Отменить подписку</button>
   </div>
 </div>
 
@@ -603,16 +352,13 @@ body {
   <div class="screen-header-center">Ваш прогресс ✨</div>
   <div class="progress-body">
     <div class="prog-sub">Сравнивайте фото и наблюдайте изменения</div>
-    
     <div class="prog-card">
       <div class="prog-card-title">За последние 14 дней</div>
       <div class="prog-row"><span class="prog-icon">📉</span> воспаления <span class="prog-down">↓12%</span></div>
       <div class="prog-row"><span class="prog-icon">✨</span> тон кожи <span class="prog-up">лучше</span></div>
       <div class="prog-row"><span class="prog-icon">💧</span> кожа выглядит <span class="prog-up">спокойнее</span></div>
     </div>
-
     <div class="prog-motivation">Даже маленькие изменения со временем дают большой результат 💖</div>
-
     <button class="btn-primary" onclick="alert('Функция будет доступна в следующей версии')">Сделать новое фото 📸</button>
   </div>
 </div>
@@ -622,9 +368,7 @@ body {
   <div class="screen-header-center">AI-beauty помощник</div>
   <div class="chat-body" id="chatBody">
     <div class="chat-sub">Спросите всё, что волнует вашу кожу</div>
-    
     <div class="chat-bubble ai">Здравствуйте! Я ваш ИИ-помощник. Задайте вопрос об уходе, ингредиентах или состоянии кожи ✨</div>
-    
     <div class="chat-chips">
       <button class="chip" onclick="sendChatMessage('Почему меня высыпало?')">Почему меня высыпало?</button>
       <button class="chip" onclick="sendChatMessage('Можно ли сочетать эти средства?')">Можно ли сочетать средства?</button>
@@ -637,7 +381,7 @@ body {
   </div>
 </div>
 
-<!-- RETAIN (Удержание подписки) -->
+<!-- RETAIN -->
 <div id="s-retain" class="screen">
   <div class="retain-top">
     <div class="retain-emoji">😔</div>
@@ -667,54 +411,19 @@ body {
 <script>
 // ─── QUESTIONS ───────────────────────────────────────────────
 const QUESTIONS = [
-  {
-    q: "Какой у тебя тип кожи?",
-    hint: "Не уверена? Жирная — если блестит к полудню без крема.",
-    opts: ["Жирная","Сухая","Комбинированная","Нормальная","Чувствительная"],
-    multi: false
-  },
-  {
-    q: "Что тебя беспокоит больше всего?",
-    hint: "Выбери до 2 вариантов.",
-    opts: ["Акне и прыщи","Поры и жирный блеск","Тусклость и серость","Морщины и упругость","Пигментация и пятна","Сухость и шелушение","Покраснения","Всё устраивает"],
-    multi: true, max: 2
-  },
-  {
-    q: "Сколько тебе лет?",
-    hint: "Кожа меняется с возрастом — рекомендации будут точнее.",
-    opts: ["До 20","20–27","28–35","36–45","46+"],
-    multi: false
-  },
-  {
-    q: "Бюджет на уход в месяц?",
-    hint: "Суммарно на все средства: очищение, уход, защита.",
-    opts: ["До 1 000 ₽","1 000–3 000 ₽","3 000–7 000 ₽","7 000–15 000 ₽","Без ограничений"],
-    multi: false
-  },
-  {
-    q: "Какую косметику предпочитаешь?",
-    hint: "Можно выбрать несколько.",
-    opts: ["Аптечная (CeraVe, La Roche)","Корейская (Cosrx, Some By Mi)","Российская (Librederm)","Масс-маркет (Nivea, Garnier)","Люкс (Lancôme, Estée Lauder)","Натуральная / без химии","Без разницы — главное результат"],
-    multi: true, max: 3
-  },
-  {
-    q: "Аллергия или что избегаешь?",
-    hint: "Укажи — чтобы не получить неподходящее средство.",
-    opts: ["Нет аллергий","Спирт","Отдушки и парфюм","Ретинол","Силиконы","Минеральные масла","Кислоты AHA/BHA"],
-    multi: true, max: 4
-  },
-  {
-    q: "Сколько шагов ухода готова делать каждый день?",
-    hint: "Честно — короткий уход, который делаешь, лучше длинного, который бросишь.",
-    opts: ["1–2 шага — только база","3–4 шага — стандарт","5+ шагов — люблю уход"],
-    multi: false
-  }
+  { q: "Какой у тебя тип кожи?", hint: "Не уверена? Жирная — если блестит к полудню без крема.", opts: ["Жирная","Сухая","Комбинированная","Нормальная","Чувствительная"], multi: false },
+  { q: "Что тебя беспокоит больше всего?", hint: "Выбери до 2 вариантов.", opts: ["Акне и прыщи","Поры и жирный блеск","Тусклость и серость","Морщины и упругость","Пигментация и пятна","Сухость и шелушение","Покраснения","Всё устраивает"], multi: true, max: 2 },
+  { q: "Сколько тебе лет?", hint: "Кожа меняется с возрастом — рекомендации будут точнее.", opts: ["До 20","20–27","28–35","36–45","46+"], multi: false },
+  { q: "Бюджет на уход в месяц?", hint: "Суммарно на все средства: очищение, уход, защита.", opts: ["До 1 000 ₽","1 000–3 000 ₽","3 000–7 000 ₽","7 000–15 000 ₽","Без ограничений"], multi: false },
+  { q: "Какую косметику предпочитаешь?", hint: "Можно выбрать несколько.", opts: ["Аптечная (CeraVe, La Roche)","Корейская (Cosrx, Some By Mi)","Российская (Librederm)","Масс-маркет (Nivea, Garnier)","Люкс (Lancôme, Estée Lauder)","Натуральная / без химии","Без разницы — главное результат"], multi: true, max: 3 },
+  { q: "Аллергия или что избегаешь?", hint: "Укажи — чтобы не получить неподходящее средство.", opts: ["Нет аллергий","Спирт","Отдушки и парфюм","Ретинол","Силиконы","Минеральные масла","Кислоты AHA/BHA"], multi: true, max: 4 },
+  { q: "Сколько шагов ухода готова делать каждый день?", hint: "Честно — короткий уход, который делаешь, лучше длинного, который бросишь.", opts: ["1–2 шага — только база","3–4 шага — стандарт","5+ шагов — люблю уход"], multi: false }
 ];
 
 let step = 0;
 let answers = QUESTIONS.map(() => []);
 let loadingInterval;
-let lastAIResult = null; // Сохраняем уход от ИИ
+let lastAIResult = null; 
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -723,7 +432,6 @@ function showScreen(id) {
 
 function switchTab(screenId, btnElement) {
   showScreen(screenId);
-  // Убираем класс active у всех кнопок и ставим только на нажатую
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
   if (btnElement) btnElement.classList.add('active');
 }
@@ -781,7 +489,6 @@ function buildProfile() {
   return `Тип кожи: ${get(0)}\nОсновные проблемы: ${get(1)}\nВозраст: ${get(2)}\nБюджет в месяц: ${get(3)}\nПредпочтения по брендам: ${get(4)}\nАллергии и исключения: ${get(5)}\nКоличество шагов: ${get(6)}`;
 }
 
-// ─── LOADING ANIMATION ──────────────────────────────
 function startLoadingAnimation() {
   const steps = [
     "🔍 Анализируем состояние кожи…",
@@ -809,7 +516,8 @@ async function submitQuiz() {
   const profile = buildProfile();
 
   try {
-    const res = await fetch('/.netlify/functions/generate', {
+    // ИЗМЕНЕН URL ДЛЯ CLOUDFLARE PAGES
+    const res = await fetch('/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ profile })
@@ -825,6 +533,7 @@ async function submitQuiz() {
     const result = JSON.parse(data.result);
     
     clearInterval(loadingInterval);
+    lastAIResult = result;
     renderResult(result);
 
   } catch (e) {
@@ -834,9 +543,7 @@ async function submitQuiz() {
   }
 }
 
-// ─── RENDER RESULT (NEW LOGIC) ──────────────────────
 function renderResult(r) {
-lastAIResult = r;
   const score = r.skin_score || 63;
   const problems = r.problems || ["Склонность к воспалениям"];
   const good_sides = r.good_sides || ["Хороший потенциал"];
@@ -852,17 +559,14 @@ lastAIResult = r;
       </div>
       <div class="score-text">Кожа выглядит лучше, чем вы думаете — и у неё есть хороший потенциал для улучшения.</div>
     </div>
-
     <div class="tags-section">
       <div class="tags-title">Выявлено:</div>
       ${problemsHtml}
     </div>
-
     <div class="tags-section">
       <div class="tags-title">Хорошие стороны:</div>
       ${goodHtml}
     </div>
-
     <div class="blur-container">
       <div class="blur-content">
         <div class="blur-fake-item"></div>
@@ -878,9 +582,9 @@ lastAIResult = r;
         <button class="btn-primary" style="max-width: 260px;" onclick="showScreen('s-paywall')">Открыть полный анализ</button>
       </div>
     </div>
-
-        <button class="btn-outline" onclick="shareScore(${score})" style="margin-top: 24px;">Поделиться результатом ✨</button>
-    <button class="btn-outline" onclick="startQuiz()" style="margin-top: 8px; color: var(--text3); border-color: transparent);">Пройти тест заново</button>
+    <!-- ИСПРАВЛЕНА ОПЕЧАТКА В СТИЛЯХ -->
+    <button class="btn-outline" onclick="shareScore(${score})" style="margin-top: 24px;">Поделиться результатом ✨</button>
+    <button class="btn-outline" onclick="startQuiz()" style="margin-top: 8px; color: var(--text3); border-color: transparent;">Пройти тест заново</button>
     <div class="disclaimer">Рекомендации BeautyMe AI носят информационный характер и не являются медицинской консультацией.</div>
   `;
 
@@ -906,7 +610,18 @@ function fakePayment() {
   else if (hour >= 23 || hour < 5) greet = "Доброй ночи 🌙";
   document.getElementById('greetingText').textContent = greet;
   
-  // Отрисовываем реальный уход, если он есть
+  // Обновляем счет на главном экране на реальный от ИИ
+  if (lastAIResult) {
+    const score = lastAIResult.skin_score || 63;
+    document.getElementById('homeScoreVal').innerHTML = `${score} <span class="hs-up">new</span>`;
+    document.getElementById('homeScoreCircle').textContent = score;
+    
+    if (lastAIResult.pro_tip) {
+      document.getElementById('homeProTip').textContent = lastAIResult.pro_tip;
+    }
+  }
+
+  // Отрисовываем реальный уход
   const routineList = document.getElementById('homeRoutineList');
   if (lastAIResult && routineList) {
     let html = '';
@@ -931,25 +646,18 @@ function fakePayment() {
   showScreen('s-home');
 }
 
-
 function sendChatMessage(text) {
   const chatBody = document.getElementById('chatBody');
-  
-  // Удаляем подсказки-чипы после первого клика
   const chips = document.querySelector('.chat-chips');
   if (chips) chips.remove();
   const sub = document.querySelector('.chat-sub');
   if (sub) sub.remove();
 
-  // Добавляем сообщение пользователя
   chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
-  
-  // Имитация набора текста ИИ
   const typingId = 'typing-' + Date.now();
   chatBody.innerHTML += `<div class="chat-bubble ai" id="${typingId}">Печатает...</div>`;
-  chatBody.scrollTop = chatBody.scrollHeight; // Скролл вниз
+  chatBody.scrollTop = chatBody.scrollHeight;
 
-  // Имитация ответа ИИ через 1.5 секунды
   setTimeout(() => {
     document.getElementById(typingId).textContent = "Отличный вопрос! Как ваш AI-помощник, я советую обратить внимание на мягкие очищающие средства и не забывать про SPF. Подробнее я смогу рассказать после полного анализа вашей кожи 💖";
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -964,19 +672,15 @@ function sendChatFromInput() {
   }
 }
 
-
-// PWA Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
-// ─── PWA INSTALL LOGIC ────────────────────────────
 let deferredPrompt;
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('installBtn').style.display = 'block'; // Показываем кнопку для Android
+  document.getElementById('installBtn').style.display = 'block';
 });
 
 function installApp() {
@@ -989,10 +693,9 @@ function installApp() {
   }
 }
 
-// Проверка на iOS
 const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
 if (isIos && !window.navigator.standalone) {
-  document.getElementById('iosHint').style.display = 'block'; // Показываем подсказку для iPhone
+  document.getElementById('iosHint').style.display = 'block';
 }
 </script>
 </body>
