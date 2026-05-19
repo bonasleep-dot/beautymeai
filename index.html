@@ -487,6 +487,8 @@ function switchTab(screenId, btnElement) {
 }
 
 function startQuiz() {
+  localStorage.removeItem('beautyme_result');
+  localStorage.removeItem('beautyme_profile');
   step = 0;
   answers = QUESTIONS.map(() => []);
   renderQuestion();
@@ -584,6 +586,8 @@ async function submitQuiz() {
     
     clearInterval(loadingInterval);
     lastAIResult = result;
+    localStorage.setItem('beautyme_result', JSON.stringify(result));
+    localStorage.setItem('beautyme_profile', profile);
     renderResult(result);
 
   } catch (e) {
@@ -826,6 +830,20 @@ const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
 if (isIos && !window.navigator.standalone) {
   document.getElementById('iosHint').style.display = 'block';
 }
+// ─── ПРОВЕРКА СОХРАНЕННЫХ ДАННЫХ ПРИ ЗАГРУЗКЕ ───
+window.addEventListener('DOMContentLoaded', () => {
+  const savedResult = localStorage.getItem('beautyme_result');
+  const savedProfile = localStorage.getItem('beautyme_profile');
+  
+  if (savedResult && savedProfile) {
+    // Если данные есть, восстанавливаем их и сразу показываем Главный экран
+    lastAIResult = JSON.parse(savedResult);
+    userProfileText = savedProfile;
+    fakePayment(); // Эта функция уже умеет рисовать Главный экран
+  }
+  // Если данных нет, пользователь просто увидит обычный стартовый экран (s-splash)
+});
+
 </script>
 </body>
 </html>
