@@ -1,0 +1,17 @@
+{
+  "name": "BeautyMe AI",
+  "short_name": "BeautyMe",
+  "description": "Персональный AI-помощник для красивой и здоровой кожи",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#1a1a1a",
+    "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
