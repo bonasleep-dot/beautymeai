@@ -1,5 +1,3 @@
-<!-- Твой HTML, но с нужными правками. Скопируй целиком -->
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,7 +19,7 @@
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/109291017" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-<title>BeautyMe AI — персональный уход для кожи</title>
+<title>BeautyMe AI — персональный уход за кожей</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -109,11 +107,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tag-warn { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--red-bg); color: #e88; border: 0.5px solid var(--red); margin-right: 6px; margin-bottom: 6px; }
 .tag-good { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--green-bg); color: #7ab893; border: 0.5px solid var(--green); margin-right: 6px; margin-bottom: 6px; }
 .blur-container { position: relative; margin-top: 32px; overflow: hidden; border-radius: 16px; }
-.blur-content {
-  filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7;
-  background: var(--bg2); padding: 20px;
-  min-height: 280px; /* <-- Добавили это */
-}
+.blur-content { filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7; background: var(--bg2); padding: 20px; min-height: 280px; }
 .blur-fake-item { height: 16px; background: var(--bg3); border-radius: 8px; margin-bottom: 12px; width: 80%; }
 .blur-fake-item:last-child { width: 60%; }
 .paywall-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(2px); padding: 24px; text-align: center; }
@@ -167,7 +161,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .screen-header-center { padding: 24px 24px 16px; text-align: center; font-family: var(--serif); font-size: 22px; color: var(--text); border-bottom: 0.5px solid var(--border); }
 
 /* PROGRESS */
-.progress-body { padding: 24px 20px 120px; }
+.progress-body { padding: 24px 20px 160px; } /* Увеличен отступ снизу */
 .prog-sub { font-size: 14px; color: var(--text3); margin-bottom: 24px; text-align: center; }
 .prog-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
 .prog-card-title { font-size: 13px; color: var(--text2); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .08em; }
@@ -214,49 +208,23 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 @media (min-width: 600px) { body { max-width: 480px; border-left: 0.5px solid var(--border); border-right: 0.5px solid var(--border); } }
 
 /* ── ROUTINE ACCORDION ── */
-.routine-step {
-  background: var(--bg3);
-  border-radius: 12px;
-  margin-bottom: 10px;
-  overflow: hidden;
-  border: 0.5px solid var(--border);
-  transition: border-color 0.2s;
-}
+.routine-step { background: var(--bg3); border-radius: 12px; margin-bottom: 10px; overflow: hidden; border: 0.5px solid var(--border); transition: border-color 0.2s; }
 .routine-step:hover { border-color: var(--accent); }
-
-.step-header {
-  display: flex;
-  align-items: center;
-  padding: 12px 14px;
-  cursor: pointer;
-  gap: 10px;
-}
-.step-header input[type="checkbox"] {
-  appearance: none; width: 20px; height: 20px; border-radius: 6px;
-  border: 1.5px solid var(--border); background: var(--bg2); cursor: pointer; flex-shrink: 0;
-  transition: all 0.15s;
-}
-.step-header input[type="checkbox"]:checked {
-  background: var(--accent); border-color: var(--accent);
-}
+.step-header { display: flex; align-items: center; padding: 12px 14px; cursor: pointer; gap: 10px; }
+.step-header input[type="checkbox"] { appearance: none; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--bg2); cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
+.step-header input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
 .step-info { flex: 1; min-width: 0; }
 .step-name { font-size: 13px; color: var(--text3); display: block; margin-bottom: 2px; }
 .step-product { font-size: 14px; color: var(--text); font-weight: 500; display: block; line-height: 1.3; }
 .step-price { font-size: 13px; color: var(--accent); font-weight: 500; margin-right: 8px; white-space: nowrap; }
 .step-arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
 .routine-step.open .step-arrow { transform: rotate(180deg); }
-
-.step-details {
-  display: none; padding: 0 14px 14px 44px; /* 44px отступ под чекбокс */
-  font-size: 13px; color: var(--text2); line-height: 1.5;
-}
+.step-details { display: none; padding: 0 14px 14px 44px; font-size: 13px; color: var(--text2); line-height: 1.5; }
 .routine-step.open .step-details { display: block; }
 .step-why { margin-bottom: 8px; }
 .step-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .step-tag { background: var(--bg2); border: 0.5px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 11px; color: var(--accent2); }
 .step-buy { font-size: 12px; color: var(--text3); margin-top: 8px; }
-
-
 </style>
 </head>
 <body>
@@ -352,9 +320,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       <div class="hs-circle-mini" id="homeScoreCircle">63</div>
     </div>
 
+    <!-- Контейнер для резюме и предупреждений от ИИ -->
+    <div id="homeExtraInfo"></div>
+
     <div class="home-routine-card">
       <div class="section-label">Сегодняшний уход <span id="routineProgress" style="color:var(--accent);">0/0</span></div>
-      <!-- ДОБАВЛЕН ID ДЛЯ РЕНДЕРА УХОДА ОТ ИИ -->
       <div id="homeRoutineList">
         <div class="routine-block">
           <div class="routine-title">☀ Утро</div>
@@ -376,7 +346,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     
     <button class="btn-outline" onclick="startQuiz()" style="margin-top: 10px;">Пройти новый анализ</button>
-    <button class="btn-ghost" style="margin-top: 20px; color: var(--text3);" onclick="showScreen('s-retain')">Отменить подписку</button>
+    <button class="btn-ghost" style="margin-top: 20px; color: var(--text3);" onclick="cancelSubscription()">Отменить подписку</button>
   </div>
 </div>
 
@@ -401,14 +371,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="screen-header-center">Ваш прогресс ✨</div>
   <div class="progress-body">
     <div class="prog-sub">Сравнивайте результаты и наблюдайте изменения</div>
-    
-    <!-- Сюда будем рендерить реальную динамику -->
-    <div class="prog-card" id="progressCardContent">
-      <!-- Данные появятся здесь через JS -->
-    </div>
-
+    <div class="prog-card" id="progressCardContent"></div>
     <div class="prog-motivation">Даже маленькие изменения со временем дают большой результат 💖</div>
-
     <button class="btn-primary" onclick="startQuiz()">Пройти новый анализ 📝</button>
   </div>
 </div>
@@ -420,10 +384,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     <div class="chat-sub">Спросите всё, что волнует вашу кожу</div>
     <div class="chat-bubble ai">Здравствуйте! Я ваш ИИ-помощник. Задайте вопрос об уходе, ингредиентах или состоянии кожи ✨</div>
    <div class="chat-chips">
-  <button class="chip" onclick="sendChatMessage('Что сильнее всего вредит моей коже?')">Что вредит коже?</button>
-  <button class="chip" onclick="sendChatMessage('Какой шаг ухода пропускать нельзя?')">Главный шаг ухода</button>
-  <button class="chip" onclick="sendChatMessage('Чего мне стоит избегать в уходе?')">Чего избегать?</button>
-</div>
+      <button class="chip" onclick="sendChatMessage('Что сильнее всего вредит моей коже?')">Что вредит коже?</button>
+      <button class="chip" onclick="sendChatMessage('Какой шаг ухода пропускать нельзя?')">Главный шаг ухода</button>
+      <button class="chip" onclick="sendChatMessage('Чего мне стоит избегать в уходе?')">Чего избегать?</button>
+    </div>
   </div>
   <div class="chat-input-area">
     <input type="text" id="chatInput" class="chat-input" placeholder="Напишите свой вопрос…">
@@ -446,7 +410,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="retain-bottom">
     <button class="btn-primary" onclick="showScreen('s-home')">Остаться со скидкой 50% ✨</button>
     <div class="retain-price-note">195₽ на следующий месяц</div>
-    <button class="btn-ghost" onclick="showScreen('s-splash')">Все равно отменить</button>
+    <button class="btn-ghost" onclick="cancelSubscription()">Все равно отменить</button>
   </div>
 </div>
 
@@ -485,11 +449,7 @@ function switchTab(screenId, btnElement) {
   showScreen(screenId);
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
   if (btnElement) btnElement.classList.add('active');
-  
-  // Если перешли на вкладку Прогресс — отрисовываем актуальные данные
-  if (screenId === 's-progress') {
-    renderProgress();
-  }
+  if (screenId === 's-progress') renderProgress();
 }
 
 function startQuiz() {
@@ -497,6 +457,7 @@ function startQuiz() {
   localStorage.removeItem('beautyme_profile');
   step = 0;
   answers = QUESTIONS.map(() => []);
+  lastAIResult = null; 
   renderQuestion();
   showScreen('s-quiz');
 }
@@ -567,7 +528,7 @@ function startLoadingAnimation() {
   }, 3000);
 }
 
-// ─── API CALL (Анализ кожи) ────────────────────────────────
+// ─── API CALL ─────────────────────────────────────────────
 async function submitQuiz() {
   showScreen('s-loading');
   startLoadingAnimation();
@@ -594,13 +555,19 @@ async function submitQuiz() {
     lastAIResult = result;
     localStorage.setItem('beautyme_result', JSON.stringify(result));
     localStorage.setItem('beautyme_profile', profile);
+    
     // Сохраняем историю для вкладки Прогресс
     let history = JSON.parse(localStorage.getItem('beautyme_history') || '[]');
     history.push({ score: result.skin_score, date: new Date().toLocaleDateString('ru-RU') });
-    // Оставляем только последние 5 результатов, чтобы не захламлять память
     if (history.length > 5) history = history.slice(-5);
     localStorage.setItem('beautyme_history', JSON.stringify(history));
-    renderResult(result);
+
+    // ПРОВЕРКА НА ПРЕМИУМ: Если уже оплатили - сразу на главный экран
+    if (localStorage.getItem('beautyme_premium') === 'true') {
+      fakePayment(); 
+    } else {
+      renderResult(result);
+    }
 
   } catch (e) {
     clearInterval(loadingInterval);
@@ -634,7 +601,6 @@ function renderResult(r) {
       ${goodHtml}
     </div>
     <div class="blur-container">
-      <!-- РЕНДЕРИМ РЕАЛЬНЫЙ УХОД, НО РАЗМЫТЫЙ -->
       <div class="blur-content">
         <div class="routine-block">
           <div class="routine-title">☀ Утро</div>
@@ -645,7 +611,6 @@ function renderResult(r) {
           ${r.evening_routine?.map(p => `<div style="height: 16px; background: var(--bg3); border-radius: 8px; margin-bottom: 10px; width: ${60 + Math.random() * 30}%;">&nbsp;</div><div style="font-size: 14px; color: var(--text2); margin-bottom: 14px;">${p.step_name}: ${p.product_name} (${p.brand})</div>`).join('') || '<div class="blur-fake-item"></div><div class="blur-fake-item"></div>'}
         </div>
       </div>
-      
       <div class="paywall-overlay">
         <div class="paywall-lock">🔒</div>
         <div class="paywall-title">Персональный план ухода</div>
@@ -690,6 +655,7 @@ function updateRoutineProgress() {
     scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
   }
 }
+
 function renderProgress() {
   const history = JSON.parse(localStorage.getItem('beautyme_history') || '[]');
   const card = document.getElementById('progressCardContent');
@@ -706,7 +672,6 @@ function renderProgress() {
   html += `<div class="prog-row"><span class="prog-icon">🎯</span> Skin Score: <strong>${latest.score}</strong>/100</div>`;
   html += `<div class="prog-row" style="font-size:12px; color:var(--text3);">${latest.date}</div>`;
 
-  // Если есть предыдущий результат, считаем разницу
   if (history.length >= 2) {
     const prev = history[history.length - 2];
     const diff = latest.score - prev.score;
@@ -724,11 +689,13 @@ function renderProgress() {
   } else {
     html += `<div class="prog-row" style="font-size:13px; color:var(--text3); margin-top:8px;">Пройдите анализ через 7-14 дней, чтобы увидеть динамику</div>`;
   }
-
   card.innerHTML = html;
 }    
 
 function fakePayment() {
+  // Сохраняем премиум-статус
+  localStorage.setItem('beautyme_premium', 'true');
+
   const hour = new Date().getHours();
   let greet = "Доброе утро ✨";
   if (hour >= 12 && hour < 17) greet = "Добрый день ✨";
@@ -736,18 +703,16 @@ function fakePayment() {
   else if (hour >= 23 || hour < 5) greet = "Доброй ночи 🌙";
   document.getElementById('greetingText').textContent = greet;
   
-  // Обновляем счет на главном экране
-    if (lastAIResult) {
+  if (lastAIResult) {
     const score = lastAIResult.skin_score || 63;
     document.getElementById('homeScoreVal').innerHTML = `${score} <span class="hs-up">new</span>`;
     document.getElementById('homeScoreCircle').textContent = score;
     
-    // Обновляем совет дня (Pro Tip)
     if (lastAIResult.pro_tip) {
       document.getElementById('homeProTip').textContent = lastAIResult.pro_tip;
     }
 
-    // Добавляем резюме и предупреждения под Skin Score
+    // Добавляем резюме и предупреждения (без дублирования)
     let extraInfoHtml = '';
     if (lastAIResult.profile_summary) {
       extraInfoHtml += `
@@ -763,16 +728,13 @@ function fakePayment() {
           <div class="tip-text" style="color: #e88;">${lastAIResult.avoid}</div>
         </div>`;
     }
-    
-    // Вставляем эти карточки прямо перед блоком с уходом
-    const routineCard = document.getElementById('homeRoutineList').parentElement;
-    routineCard.insertAdjacentHTML('beforebegin', extraInfoHtml);
+    document.getElementById('homeExtraInfo').innerHTML = extraInfoHtml;
   }
 
   // Отрисовываем реальный уход
   const routineList = document.getElementById('homeRoutineList');
   if (lastAIResult && routineList) {
-    let html = '<span id="routineProgress" style="float:right; color:var(--accent); font-size:12px;">0/0</span>';
+    let html = '';
     
     if (lastAIResult.morning_routine?.length) {
       html += `<div class="routine-block"><div class="routine-title">☀ Утро</div>`;
@@ -827,11 +789,22 @@ function fakePayment() {
     }
 
     routineList.innerHTML = html;
-    updateRoutineProgress(); // Запускаем первый подсчет
+    updateRoutineProgress(); 
   }
 
   document.getElementById('bottomNav').classList.remove('hidden');
   showScreen('s-home');
+}
+
+// Функция отмены подписки
+function cancelSubscription() {
+  localStorage.removeItem('beautyme_premium');
+  localStorage.removeItem('beautyme_result');
+  localStorage.removeItem('beautyme_profile');
+  lastAIResult = null;
+  userProfileText = '';
+  document.getElementById('bottomNav').classList.add('hidden');
+  showScreen('s-splash');
 }
 
 // ─── CHAT ──────────────────────────────────────────────
@@ -905,20 +878,18 @@ const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
 if (isIos && !window.navigator.standalone) {
   document.getElementById('iosHint').style.display = 'block';
 }
+
 // ─── ПРОВЕРКА СОХРАНЕННЫХ ДАННЫХ ПРИ ЗАГРУЗКЕ ───
 window.addEventListener('DOMContentLoaded', () => {
   const savedResult = localStorage.getItem('beautyme_result');
   const savedProfile = localStorage.getItem('beautyme_profile');
   
   if (savedResult && savedProfile) {
-    // Если данные есть, восстанавливаем их и сразу показываем Главный экран
     lastAIResult = JSON.parse(savedResult);
     userProfileText = savedProfile;
-    fakePayment(); // Эта функция уже умеет рисовать Главный экран
+    fakePayment(); 
   }
-  // Если данных нет, пользователь просто увидит обычный стартовый экран (s-splash)
 });
-
 </script>
 </body>
 </html>
