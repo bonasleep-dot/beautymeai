@@ -469,7 +469,7 @@ let step = 0;
 let answers = QUESTIONS.map(() => []);
 let loadingInterval;
 let lastAIResult = null; 
-let userProfileText = '';
+let userProfileText = ''; 
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -555,20 +555,19 @@ function startLoadingAnimation() {
   }, 3000);
 }
 
-// ─── API CALL ─────────────────────────────────────────
+// ─── API CALL (Анализ кожи) ────────────────────────────────
 async function submitQuiz() {
   showScreen('s-loading');
   startLoadingAnimation();
-  userProfileText = buildProfile(); // <-- ДОБАВИТЬ ЭТО
+  userProfileText = buildProfile(); 
   const profile = userProfileText;
 
   try {
-    // ИЗМЕНЕН URL ДЛЯ CLOUDFLARE PAGES
     const res = await fetch('/generate', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ profile })
-});
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile })
+    });
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
@@ -629,7 +628,6 @@ function renderResult(r) {
         <button class="btn-primary" style="max-width: 260px;" onclick="showScreen('s-paywall')">Открыть полный анализ</button>
       </div>
     </div>
-    <!-- ИСПРАВЛЕНА ОПЕЧАТКА В СТИЛЯХ -->
     <button class="btn-outline" onclick="shareScore(${score})" style="margin-top: 24px;">Поделиться результатом ✨</button>
     <button class="btn-outline" onclick="startQuiz()" style="margin-top: 8px; color: var(--text3); border-color: transparent;">Пройти тест заново</button>
     <div class="disclaimer">Рекомендации BeautyMe AI носят информационный характер и не являются медицинской консультацией.</div>
@@ -649,6 +647,7 @@ async function shareScore(score) {
   }
 }
 
+// ─── PROGRESS & PAYMENT ────────────────────────────────
 function updateRoutineProgress() {
   const checks = document.querySelectorAll('#homeRoutineList input[type="checkbox"]');
   const total = checks.length;
@@ -666,7 +665,7 @@ function updateRoutineProgress() {
     scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
   }
 }
-    
+
 function fakePayment() {
   const hour = new Date().getHours();
   let greet = "Доброе утро ✨";
@@ -744,114 +743,41 @@ function fakePayment() {
     }
 
     routineList.innerHTML = html;
-    
-    // Сразу обновляем счетчик после отрисовки
-    updateRoutineProgress();
+    updateRoutineProgress(); // Запускаем первый подсчет
   }
 
   document.getElementById('bottomNav').classList.remove('hidden');
   showScreen('s-home');
 }
 
-    // Отрисовываем реальный уход (Красивые карточки)
-  const routineList = document.getElementById('homeRoutineList');
-  if (lastAIResult && routineList) {
-    let html = '';
-    
-    if (lastAIResult.morning_routine?.length) {
-      html += `<div class="routine-block"><div class="routine-title">☀ Утро</div>`;
-      lastAIResult.morning_routine.forEach(p => {
-        html += `
-        <div class="routine-step" onclick="this.classList.toggle('open')">
-          <div class="step-header">
-            <input type="checkbox" onclick="event.stopPropagation()">
-            <div class="step-info">
-              <span class="step-name">${p.step_name || 'Шаг'}</span>
-              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
-            </div>
-            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
-            <span class="step-arrow">▼</span>
-          </div>
-          <div class="step-details">
-            <div class="step-why">${p.why || ''}</div>
-            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
-            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
-          </div>
-        </div>`;
-      });
-      html += `</div>`;
-    }
-
-    if (lastAIResult.evening_routine?.length) {
-      html += `<div class="routine-block"><div class="routine-title">🌙 Вечер</div>`;
-      lastAIResult.evening_routine.forEach(p => {
-        html += `
-        <div class="routine-step" onclick="this.classList.toggle('open')">
-          <div class="step-header">
-            <input type="checkbox" onchange="updateRoutineProgress()">
-            <div class="step-info">
-              <span class="step-name">${p.step_name || 'Шаг'}</span>
-              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
-            </div>
-            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
-            <span class="step-arrow">▼</span>
-          </div>
-          <div class="step-details">
-            <div class="step-why">${p.why || ''}</div>
-            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
-            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
-          </div>
-        </div>`;
-      });
-      html += `</div>`;
-    }
-
-    // Добавляем итоговую стоимость куда-нибудь, если она есть
-    if (lastAIResult.total_cost_rub) {
-       html += `<div style="text-align:right; font-size:13px; color:var(--text3); margin-top:8px;">Итого: ~${lastAIResult.total_cost_rub} ₽/мес</div>`;
-    }
-
-    routineList.innerHTML = html;
-  }
-
-  document.getElementById('bottomNav').classList.remove('hidden');
-  showScreen('s-home');
-}
-
+// ─── CHAT ──────────────────────────────────────────────
 async function sendChatMessage(text) {
   const chatBody = document.getElementById('chatBody');
   
-  // Удаляем подсказки-чипы после первого клика
   const chips = document.querySelector('.chat-chips');
   if (chips) chips.remove();
   const sub = document.querySelector('.chat-sub');
   if (sub) sub.remove();
 
-  // Добавляем сообщение пользователя
   chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
-  
-  // Имитация набора текста ИИ
   const typingId = 'typing-' + Date.now();
   chatBody.innerHTML += `<div class="chat-bubble ai" id="${typingId}">Печатает...</div>`;
-  chatBody.scrollTop = chatBody.scrollHeight; // Скролл вниз
+  chatBody.scrollTop = chatBody.scrollHeight;
 
   try {
-    // Реальный запрос к нашему Cloudflare API
     const res = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         question: text, 
         profile: userProfileText,
-        summary: lastAIResult?.profile_summary || '' // Передаем резюме из прошлого анализа
+        summary: lastAIResult?.profile_summary || ''
       })
     });
 
     const data = await res.json();
-    
     if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
 
-    // Заменяем "Печатает..." на реальный ответ
     document.getElementById(typingId).textContent = data.reply;
     
   } catch (e) {
@@ -869,6 +795,7 @@ function sendChatFromInput() {
   }
 }
 
+// ─── PWA & MISC ────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
