@@ -109,7 +109,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tag-warn { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--red-bg); color: #e88; border: 0.5px solid var(--red); margin-right: 6px; margin-bottom: 6px; }
 .tag-good { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: var(--green-bg); color: #7ab893; border: 0.5px solid var(--green); margin-right: 6px; margin-bottom: 6px; }
 .blur-container { position: relative; margin-top: 32px; overflow: hidden; border-radius: 16px; }
-.blur-content { filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7; background: var(--bg2); padding: 20px; }
+.blur-content {
+  filter: blur(8px); pointer-events: none; user-select: none; opacity: 0.7;
+  background: var(--bg2); padding: 20px;
+  min-height: 280px; /* <-- Добавили это */
+}
 .blur-fake-item { height: 16px; background: var(--bg3); border-radius: 8px; margin-bottom: 12px; width: 80%; }
 .blur-fake-item:last-child { width: 60%; }
 .paywall-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(2px); padding: 24px; text-align: center; }
@@ -626,7 +630,7 @@ function renderResult(r) {
         <div class="paywall-title">Персональный план ухода</div>
         <div class="paywall-sub">Что может провоцировать высыпания, какие средства вам подходят, прогноз улучшений</div>
         <!-- Убрали style="max-width: 260px;", теперь кнопка на всю ширину -->
-        <button class="btn-primary" onclick="showScreen('s-paywall')">Открыть полный анализ</button>
+       <button class="btn-primary" style="width: 100%" onclick="showScreen('s-paywall')">Открыть полный анализ</button>
       </div>
     </div>
     <button class="btn-outline" onclick="shareScore(${score})" style="margin-top: 24px;">Поделиться результатом ✨</button>
