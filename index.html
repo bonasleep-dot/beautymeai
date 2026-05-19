@@ -684,14 +684,36 @@ function fakePayment() {
   document.getElementById('greetingText').textContent = greet;
   
   // Обновляем счет на главном экране
-  if (lastAIResult) {
+    if (lastAIResult) {
     const score = lastAIResult.skin_score || 63;
     document.getElementById('homeScoreVal').innerHTML = `${score} <span class="hs-up">new</span>`;
     document.getElementById('homeScoreCircle').textContent = score;
     
+    // Обновляем совет дня (Pro Tip)
     if (lastAIResult.pro_tip) {
       document.getElementById('homeProTip').textContent = lastAIResult.pro_tip;
     }
+
+    // Добавляем резюме и предупреждения под Skin Score
+    let extraInfoHtml = '';
+    if (lastAIResult.profile_summary) {
+      extraInfoHtml += `
+        <div class="home-routine-card" style="margin-bottom: 16px;">
+          <div class="section-label" style="margin-bottom: 8px;">О вашей коже</div>
+          <div class="tip-text">${lastAIResult.profile_summary}</div>
+        </div>`;
+    }
+    if (lastAIResult.avoid) {
+      extraInfoHtml += `
+        <div class="home-routine-card" style="margin-bottom: 16px; border-color: var(--red);">
+          <div class="section-label" style="margin-bottom: 8px; color: var(--red);">🚫 Избегать</div>
+          <div class="tip-text" style="color: #e88;">${lastAIResult.avoid}</div>
+        </div>`;
+    }
+    
+    // Вставляем эти карточки прямо перед блоком с уходом
+    const routineCard = document.getElementById('homeRoutineList').parentElement;
+    routineCard.insertAdjacentHTML('beforebegin', extraInfoHtml);
   }
 
   // Отрисовываем реальный уход
