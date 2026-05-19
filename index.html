@@ -400,15 +400,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 <div id="s-progress" class="screen">
   <div class="screen-header-center">Ваш прогресс ✨</div>
   <div class="progress-body">
-    <div class="prog-sub">Сравнивайте фото и наблюдайте изменения</div>
-    <div class="prog-card">
-      <div class="prog-card-title">За последние 14 дней</div>
-      <div class="prog-row"><span class="prog-icon">📉</span> воспаления <span class="prog-down">↓12%</span></div>
-      <div class="prog-row"><span class="prog-icon">✨</span> тон кожи <span class="prog-up">лучше</span></div>
-      <div class="prog-row"><span class="prog-icon">💧</span> кожа выглядит <span class="prog-up">спокойнее</span></div>
+    <div class="prog-sub">Сравнивайте результаты и наблюдайте изменения</div>
+    
+    <!-- Сюда будем рендерить реальную динамику -->
+    <div class="prog-card" id="progressCardContent">
+      <!-- Данные появятся здесь через JS -->
     </div>
+
     <div class="prog-motivation">Даже маленькие изменения со временем дают большой результат 💖</div>
-    <button class="btn-primary" onclick="alert('Функция будет доступна в следующей версии')">Сделать новое фото 📸</button>
+
+    <button class="btn-primary" onclick="startQuiz()">Пройти новый анализ 📝</button>
   </div>
 </div>
 
@@ -484,6 +485,11 @@ function switchTab(screenId, btnElement) {
   showScreen(screenId);
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
   if (btnElement) btnElement.classList.add('active');
+  
+  // Если перешли на вкладку Прогресс — отрисовываем актуальные данные
+  if (screenId === 's-progress') {
+    renderProgress();
+  }
 }
 
 function startQuiz() {
@@ -588,6 +594,12 @@ async function submitQuiz() {
     lastAIResult = result;
     localStorage.setItem('beautyme_result', JSON.stringify(result));
     localStorage.setItem('beautyme_profile', profile);
+    // Сохраняем историю для вкладки Прогресс
+    let history = JSON.parse(localStorage.getItem('beautyme_history') || '[]');
+    history.push({ score: result.skin_score, date: new Date().toLocaleDateString('ru-RU') });
+    // Оставляем только последние 5 результатов, чтобы не захламлять память
+    if (history.length > 5) history = history.slice(-5);
+    localStorage.setItem('beautyme_history', JSON.stringify(history));
     renderResult(result);
 
   } catch (e) {
@@ -678,6 +690,43 @@ function updateRoutineProgress() {
     scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
   }
 }
+function renderProgress() {
+  const history = JSON.parse(localStorage.getItem('beautyme_history') || '[]');
+  const card = document.getElementById('progressCardContent');
+  
+  if (history.length === 0) {
+    card.innerHTML = `
+      <div class="prog-card-title">Данных пока нет</div>
+      <div class="prog-row"><span class="prog-icon">✨</span> Пройдите первый анализ, чтобы начать отслеживать прогресс</div>`;
+    return;
+  }
+
+  const latest = history[history.length - 1];
+  let html = `<div class="prog-card-title">Текущий результат</div>`;
+  html += `<div class="prog-row"><span class="prog-icon">🎯</span> Skin Score: <strong>${latest.score}</strong>/100</div>`;
+  html += `<div class="prog-row" style="font-size:12px; color:var(--text3);">${latest.date}</div>`;
+
+  // Если есть предыдущий результат, считаем разницу
+  if (history.length >= 2) {
+    const prev = history[history.length - 2];
+    const diff = latest.score - prev.score;
+    
+    if (diff > 0) {
+      html += `<div class="prog-row"><span class="prog-icon">📈</span> Изменение <span class="prog-up">+${diff}</span></div>`;
+      html += `<div class="prog-row" style="font-size:13px; color:var(--green);">Ваша кожа улучшается! ✨</div>`;
+    } else if (diff < 0) {
+      html += `<div class="prog-row"><span class="prog-icon">📉</span> Изменение <span style="margin-left:auto; color:var(--red); font-weight:500;">${diff}</span></div>`;
+      html += `<div class="prog-row" style="font-size:13px; color:var(--text3);">Не сдавайтесь, ухаживайте регулярно</div>`;
+    } else {
+      html += `<div class="prog-row"><span class="prog-icon">➡️</span> Изменение <span style="margin-left:auto; color:var(--text2); font-weight:500;">0</span></div>`;
+      html += `<div class="prog-row" style="font-size:13px; color:var(--text2);">Стабильно, продолжайте в том же духе</div>`;
+    }
+  } else {
+    html += `<div class="prog-row" style="font-size:13px; color:var(--text3); margin-top:8px;">Пройдите анализ через 7-14 дней, чтобы увидеть динамику</div>`;
+  }
+
+  card.innerHTML = html;
+}    
 
 function fakePayment() {
   const hour = new Date().getHours();
