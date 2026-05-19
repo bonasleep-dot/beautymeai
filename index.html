@@ -349,7 +349,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
 
     <div class="home-routine-card">
-      <div class="section-label">Сегодняшний уход</div>
+      <div class="section-label">Сегодняшний уход <span id="routineProgress" style="color:var(--accent);">0/0</span></div>
       <!-- ДОБАВЛЕН ID ДЛЯ РЕНДЕРА УХОДА ОТ ИИ -->
       <div id="homeRoutineList">
         <div class="routine-block">
@@ -668,6 +668,27 @@ function fakePayment() {
     }
   }
 
+    function updateRoutineProgress() {
+  // Считаем чекбоксы
+  const checks = document.querySelectorAll('#homeRoutineList input[type="checkbox"]');
+  const total = checks.length;
+  const checked = Array.from(checks).filter(c => c.checked).length;
+  
+  // Обновляем текст прогресса
+  const progEl = document.getElementById('routineProgress');
+  if (progEl) progEl.textContent = `${checked}/${total}`;
+
+  // Бустим Skin Score, если всё выполнено
+  const baseScore = lastAIResult?.skin_score || 63;
+  const scoreValEl = document.getElementById('homeScoreVal');
+  
+  if (checked === total && total > 0) {
+    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">+2 🔥</span>`;
+  } else {
+    scoreValEl.innerHTML = `${baseScore} <span class="hs-up">new</span>`;
+  }
+}
+
     // Отрисовываем реальный уход (Красивые карточки)
   const routineList = document.getElementById('homeRoutineList');
   if (lastAIResult && routineList) {
@@ -703,7 +724,7 @@ function fakePayment() {
         html += `
         <div class="routine-step" onclick="this.classList.toggle('open')">
           <div class="step-header">
-            <input type="checkbox" onclick="event.stopPropagation()">
+            <input type="checkbox" onchange="updateRoutineProgress()">
             <div class="step-info">
               <span class="step-name">${p.step_name || 'Шаг'}</span>
               <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
