@@ -613,7 +613,7 @@ function renderResult(r) {
       <div class="tags-title">Хорошие стороны:</div>
       ${goodHtml}
     </div>
-    <div class="blur-container">
+        <div class="blur-container">
       <div class="blur-content">
         <div class="blur-fake-item"></div>
         <div class="blur-fake-item"></div>
@@ -625,6 +625,7 @@ function renderResult(r) {
         <div class="paywall-lock">🔒</div>
         <div class="paywall-title">Персональный план ухода</div>
         <div class="paywall-sub">Что может провоцировать высыпания, какие средства вам подходят, прогноз улучшений</div>
+        <!-- Убрали style="max-width: 260px;", теперь кнопка на всю ширину -->
         <button class="btn-primary" onclick="showScreen('s-paywall')">Открыть полный анализ</button>
       </div>
     </div>
