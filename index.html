@@ -208,6 +208,51 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .error-msg { font-size: 13px; color: var(--text3); line-height: 1.6; }
 
 @media (min-width: 600px) { body { max-width: 480px; border-left: 0.5px solid var(--border); border-right: 0.5px solid var(--border); } }
+
+/* ── ROUTINE ACCORDION ── */
+.routine-step {
+  background: var(--bg3);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 0.5px solid var(--border);
+  transition: border-color 0.2s;
+}
+.routine-step:hover { border-color: var(--accent); }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  cursor: pointer;
+  gap: 10px;
+}
+.step-header input[type="checkbox"] {
+  appearance: none; width: 20px; height: 20px; border-radius: 6px;
+  border: 1.5px solid var(--border); background: var(--bg2); cursor: pointer; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.step-header input[type="checkbox"]:checked {
+  background: var(--accent); border-color: var(--accent);
+}
+.step-info { flex: 1; min-width: 0; }
+.step-name { font-size: 13px; color: var(--text3); display: block; margin-bottom: 2px; }
+.step-product { font-size: 14px; color: var(--text); font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.step-price { font-size: 13px; color: var(--accent); font-weight: 500; margin-right: 8px; white-space: nowrap; }
+.step-arrow { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
+.routine-step.open .step-arrow { transform: rotate(180deg); }
+
+.step-details {
+  display: none; padding: 0 14px 14px 44px; /* 44px отступ под чекбокс */
+  font-size: 13px; color: var(--text2); line-height: 1.5;
+}
+.routine-step.open .step-details { display: block; }
+.step-why { margin-bottom: 8px; }
+.step-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.step-tag { background: var(--bg2); border: 0.5px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 11px; color: var(--accent2); }
+.step-buy { font-size: 12px; color: var(--text3); margin-top: 8px; }
+
+
 </style>
 </head>
 <body>
@@ -623,24 +668,64 @@ function fakePayment() {
     }
   }
 
-  // Отрисовываем реальный уход
+    // Отрисовываем реальный уход (Красивые карточки)
   const routineList = document.getElementById('homeRoutineList');
   if (lastAIResult && routineList) {
     let html = '';
+    
     if (lastAIResult.morning_routine?.length) {
       html += `<div class="routine-block"><div class="routine-title">☀ Утро</div>`;
       lastAIResult.morning_routine.forEach(p => {
-        html += `<label class="routine-item"><input type="checkbox"> ${p.step_name} (${p.product_name})</label>`;
+        html += `
+        <div class="routine-step" onclick="this.classList.toggle('open')">
+          <div class="step-header">
+            <input type="checkbox" onclick="event.stopPropagation()">
+            <div class="step-info">
+              <span class="step-name">${p.step_name || 'Шаг'}</span>
+              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
+            </div>
+            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
+            <span class="step-arrow">▼</span>
+          </div>
+          <div class="step-details">
+            <div class="step-why">${p.why || ''}</div>
+            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
+            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
+          </div>
+        </div>`;
       });
       html += `</div>`;
     }
+
     if (lastAIResult.evening_routine?.length) {
       html += `<div class="routine-block"><div class="routine-title">🌙 Вечер</div>`;
       lastAIResult.evening_routine.forEach(p => {
-        html += `<label class="routine-item"><input type="checkbox"> ${p.step_name} (${p.product_name})</label>`;
+        html += `
+        <div class="routine-step" onclick="this.classList.toggle('open')">
+          <div class="step-header">
+            <input type="checkbox" onclick="event.stopPropagation()">
+            <div class="step-info">
+              <span class="step-name">${p.step_name || 'Шаг'}</span>
+              <span class="step-product">${p.product_name || 'Средство'} (${p.brand || 'Бренд'})</span>
+            </div>
+            <span class="step-price">${p.price_rub ? p.price_rub + ' ₽' : ''}</span>
+            <span class="step-arrow">▼</span>
+          </div>
+          <div class="step-details">
+            <div class="step-why">${p.why || ''}</div>
+            ${p.key_ingredients?.length ? `<div class="step-tags">${p.key_ingredients.map(i => `<span class="step-tag">${i}</span>`).join('')}</div>` : ''}
+            ${p.where_to_buy ? `<div class="step-buy">Где купить: ${p.where_to_buy}</div>` : ''}
+          </div>
+        </div>`;
       });
       html += `</div>`;
     }
+
+    // Добавляем итоговую стоимость куда-нибудь, если она есть
+    if (lastAIResult.total_cost_rub) {
+       html += `<div style="text-align:right; font-size:13px; color:var(--text3); margin-top:8px;">Итого: ~${lastAIResult.total_cost_rub} ₽/мес</div>`;
+    }
+
     routineList.innerHTML = html;
   }
 
