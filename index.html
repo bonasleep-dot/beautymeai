@@ -1195,13 +1195,25 @@ async function submitStylist() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image_base64: window.stylistPhotoBase64, outfit_text: outfitText })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
-    resDiv.className = 'dynamic-response'; resDiv.innerHTML = data.reply.replace(/\n/g, '<br>');
+
+    // Читаем ответ как текст, чтобы не упасть, если сервер вернул HTML-ошибку
+    const text = await res.text();
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error(`Сервер вернул не JSON: ${text.substring(0, 200)}`);
+    }
+
+    if (!res.ok) throw new Error(data.error || `Ошибка сервера: ${res.status}`);
+    
+    resDiv.className = 'dynamic-response'; 
+    resDiv.innerHTML = data.reply.replace(/\n/g, '<br>');
+
   } catch (e) {
-	   resDiv.className = 'dynamic-response'; 
-    resDiv.textContent = "Ошибка: " + e.message; // Показываем реальную ошибку
-    resDiv.className = 'dynamic-response'; resDiv.textContent = "Не удалось подобрать макияж 😔";
+    resDiv.className = 'dynamic-response'; 
+    resDiv.textContent = "Ошибка: " + e.message; // Теперь покажет всё
   }
 }
 
