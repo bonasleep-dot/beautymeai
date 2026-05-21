@@ -1199,6 +1199,8 @@ async function submitStylist() {
     if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
     resDiv.className = 'dynamic-response'; resDiv.innerHTML = data.reply.replace(/\n/g, '<br>');
   } catch (e) {
+	   resDiv.className = 'dynamic-response'; 
+    resDiv.textContent = "Ошибка: " + e.message; // Показываем реальную ошибку
     resDiv.className = 'dynamic-response'; resDiv.textContent = "Не удалось подобрать макияж 😔";
   }
 }
