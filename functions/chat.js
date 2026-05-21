@@ -8,16 +8,17 @@ export async function onRequestPost(context) {
   }
 
   try {
-    // Получаем вопрос пользователя и его профиль кожи
-    const { question, profile, summary } = await context.request.json();
+    const { question, profile, summary, routine_context, full_context } = await context.request.json();
 
-    const SYSTEM_PROMPT = `Ты — профессиональный, заботливый AI-beauty консультант в приложении BeautyMe AI. Отвечай кратко (2-4 предложения), по делу, современным языком без сложного медицинского жаргона. Используй эмодзи для теплоты.
+    const SYSTEM_PROMPT = `Ты — профессиональный, заботливый AI-beauty консультант в приложении BeautyMe AI. Отвечай кратко (1-3 предложения), по делу, современным языком. Используй эмодзи.
 
 Контекст: Пользователь уже проходил анализ кожи.
 Его профиль: ${profile || 'Не указан'}
 Краткое резюме его кожи: ${summary || 'Не указано'}
+Его текущий план ухода: ${routine_context || 'Не указан'}
+Полные результаты его анализа (JSON): ${full_context || 'Нет данных'}
 
-Отвечай исходя из этого контекста. Если спрашивают про лекарственные препараты, рекомендуй обратиться к дерматологу.`;
+Опирайся на полные результаты анализа. Ты знаешь его Skin Score, проблемы, хорошие стороны, что ему нельзя использовать (avoid) и его Pro Tip. Будь конкретным. Если просят проверить состав, оцени его с точки зрения профиля кожи пользователя.`;
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -31,8 +32,8 @@ export async function onRequestPost(context) {
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: question }
         ],
-        temperature: 0.7, // Чуть больше креативности для чата
-        max_tokens: 250   // Ограничиваем длину, чтобы ответы были краткими
+        temperature: 0.7,
+        max_tokens: 250
       })
     });
 
