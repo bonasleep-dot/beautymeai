@@ -1330,6 +1330,7 @@ async function loginUser() {
     } else {
       showScreen('s-splash'); // Данных нет, начинаем с начала
     }
+	syncToCloud();
   } catch (e) {
     showScreen('s-splash'); // Ошибка сети, начинаем локально
   }
