@@ -1195,42 +1195,136 @@ async function submitStylist() {
   resDiv.textContent = 'Генерирую макияж (займет 15-30 сек)... ⏳';
 
   try {
-    // 1. Запускаем генерацию
-    const initRes = await fetch('/stylist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image_base64: window.stylistPhotoBase64, outfit_text: outfitText })
-    });
-    
-    const initData = await initRes.json();
-    if (!initRes.ok) throw new Error(initData.error || 'Ошибка старта');
-    
-    const taskId = initData.taskId;
+  // 1. Запускаем генерацию
+const initRes = await fetch('/stylist', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    image_base64:
+      window.stylistPhotoBase64,
+    outfit_text:
+      outfitText
+  })
+});
 
-    // 2. Опрашиваем статус каждые 3 секунды
-    const pollInterval = setInterval(async () => {
-      try {
-        const pollRes = await fetch(`/stylist-status?task_id=${taskId}`);
-        const pollData = await pollRes.json();
-        
-        if (pollData.status === 'completed' && pollData.image) {
-          clearInterval(pollInterval);
-          resImg.src = pollData.image;
-          resImg.style.display = 'block';
-          resDiv.style.display = 'none';
-        } else if (pollData.status === 'failed') {
-          clearInterval(pollInterval);
-          throw new Error('Генерация не удалась');
-                } else {
-          // Показываем сырой ответ, чтобы найти ссылку на картинку
-          resDiv.textContent = `Статус: ${pollData.status}... Ждем ⏳\n\nRaw: ${JSON.stringify(pollData).substring(0, 500)}`;
-        }
-      } catch (e) {
-        clearInterval(pollInterval);
-        resDiv.className = 'dynamic-response'; 
-        resDiv.textContent = "Ошибка: " + e.message;
+const initData =
+  await initRes.json();
+
+if (!initRes.ok) {
+  throw new Error(
+    initData.error ||
+      'Ошибка старта'
+  );
+}
+
+const taskId =
+  initData.taskId;
+
+// сообщения loading
+const loadingTexts = [
+  '✨ Анализируем фото...',
+  '💄 Подбираем макияж под образ...',
+  '👀 Учитываем черты лица...',
+  '🎨 Создаем идеальный look...',
+  'Почти готово ✨'
+];
+
+// счетчик попыток
+let attempts = 0;
+
+// 2. Опрашиваем статус каждые 3 секунды
+const pollInterval =
+  setInterval(async () => {
+    try {
+      attempts++;
+
+      const pollRes =
+        await fetch(
+          `/stylist-status?task_id=${taskId}`
+        );
+
+      const pollData =
+        await pollRes.json();
+
+      console.log(
+        'POLL:',
+        pollData
+      );
+
+      // ГОТОВО
+      if (
+        pollData.status ===
+          'completed' &&
+        pollData.image
+      ) {
+        clearInterval(
+          pollInterval
+        );
+
+        resImg.src =
+          pollData.image;
+
+        resImg.style.display =
+          'block';
+
+        resDiv.style.display =
+          'none';
+
+        return;
       }
-    }, 3000);
+
+      // Ошибка
+      if (
+        pollData.status ===
+          'failed'
+      ) {
+        clearInterval(
+          pollInterval
+        );
+
+        throw new Error(
+          'Генерация не удалась'
+        );
+      }
+
+      // Красивый loading
+      resDiv.textContent =
+        loadingTexts[
+          Math.min(
+            attempts %
+              loadingTexts.length,
+            loadingTexts.length -
+              1
+          )
+        ];
+
+      // защита от бесконечного ожидания
+      if (
+        attempts > 30
+      ) {
+        clearInterval(
+          pollInterval
+        );
+
+        throw new Error(
+          'Генерация заняла слишком много времени'
+        );
+      }
+    } catch (e) {
+      clearInterval(
+        pollInterval
+      );
+
+      resDiv.className =
+        'dynamic-response';
+
+      resDiv.textContent =
+        'Ошибка: ' +
+        e.message;
+    }
+  }, 3000);
 
   } catch (e) {
     resDiv.className = 'dynamic-response'; 
