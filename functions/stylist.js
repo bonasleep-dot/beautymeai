@@ -42,9 +42,10 @@ export async function onRequestPost(context) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "google/gemini-3.1-flash-image-preview",
+          model:
+            "google/gemini-3.1-flash-image-preview",
 
-          // ВАЖНО: асинхронная генерация
+          // обязательно для polling
           async: true,
 
           input: {
@@ -85,7 +86,8 @@ export async function onRequestPost(context) {
       }),
       {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         }
       }
     );
@@ -95,7 +97,11 @@ export async function onRequestPost(context) {
         error: e.message
       }),
       {
-        status: 500
+        status: 500,
+        headers: {
+          "Content-Type":
+            "application/json"
+        }
       }
     );
   }
