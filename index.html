@@ -1183,152 +1183,232 @@ function handleStylistPhoto(event) {
   reader.readAsDataURL(file);
 }
 
-async function submitStylist() {
-  const outfitText = document.getElementById('stylistOutfitInput').value.trim();
-  if (!outfitText) { alert('Опишите ваш образ!'); return; }
-  if (!window.stylistPhotoBase64) { alert('Загрузите фото!'); return; }
+async function async function submitStylist() {
+  const outfitText =
+    document
+      .getElementById(
+        'stylistOutfitInput'
+      )
+      .value
+      .trim();
 
-  const resDiv = document.getElementById('stylistResult');
-  const resImg = document.getElementById('stylistResultImg');
-  resImg.style.display = 'none'; 
-  resDiv.style.display = 'block'; resDiv.className = 'dynamic-response loading'; 
-  resDiv.textContent = 'Генерирую макияж (займет 15-30 сек)... ⏳';
+  if (!outfitText) {
+    alert('Опишите ваш образ!');
+    return;
+  }
+
+  if (
+    !window.stylistPhotoBase64
+  ) {
+    alert('Загрузите фото!');
+    return;
+  }
+
+  const resDiv =
+    document.getElementById(
+      'stylistResult'
+    );
+
+  const resImg =
+    document.getElementById(
+      'stylistResultImg'
+    );
+
+  // КНОПКА
+  const generateBtn =
+    document.querySelector(
+      '#s-stylist .btn-primary'
+    );
+
+  generateBtn.disabled =
+    true;
+
+  generateBtn.style.opacity =
+    '0.5';
+
+  generateBtn.textContent =
+    'Генерируем...';
+
+  resImg.style.display =
+    'none';
+
+  resDiv.style.display =
+    'block';
+
+  resDiv.className =
+    'dynamic-response loading';
+
+  const loadingTexts = [
+    '✨ Анализируем фото...',
+    '💄 Подбираем макияж под образ...',
+    '👀 Учитываем черты лица...',
+    '🎨 Создаем идеальный look...',
+    'Почти готово ✨'
+  ];
+
+  let attempts = 0;
+
+  resDiv.textContent =
+    loadingTexts[0];
 
   try {
-  // 1. Запускаем генерацию
-const initRes = await fetch('/stylist', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    image_base64:
-      window.stylistPhotoBase64,
-    outfit_text:
-      outfitText
-  })
-});
+    // 1. Запуск генерации
+    const initRes =
+      await fetch('/stylist', {
+        method: 'POST',
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+        body: JSON.stringify({
+          image_base64:
+            window
+              .stylistPhotoBase64,
+          outfit_text:
+            outfitText
+        })
+      });
 
-const initData =
-  await initRes.json();
+    const initData =
+      await initRes.json();
 
-if (!initRes.ok) {
-  throw new Error(
-    initData.error ||
-      'Ошибка старта'
-  );
-}
-
-const taskId =
-  initData.taskId;
-
-// сообщения loading
-const loadingTexts = [
-  '✨ Анализируем фото...',
-  '💄 Подбираем макияж под образ...',
-  '👀 Учитываем черты лица...',
-  '🎨 Создаем идеальный look...',
-  'Почти готово ✨'
-];
-
-// счетчик попыток
-let attempts = 0;
-
-// 2. Опрашиваем статус каждые 3 секунды
-const pollInterval =
-  setInterval(async () => {
-    try {
-      attempts++;
-
-      const pollRes =
-        await fetch(
-          `/stylist-status?task_id=${taskId}`
-        );
-
-      const pollData =
-        await pollRes.json();
-
-      console.log(
-        'POLL:',
-        pollData
+    if (!initRes.ok) {
+      throw new Error(
+        initData.error ||
+          'Ошибка старта'
       );
-
-      // ГОТОВО
-      if (
-        pollData.status ===
-          'completed' &&
-        pollData.image
-      ) {
-        clearInterval(
-          pollInterval
-        );
-
-        resImg.src =
-          pollData.image;
-
-        resImg.style.display =
-          'block';
-
-        resDiv.style.display =
-          'none';
-
-        return;
-      }
-
-      // Ошибка
-      if (
-        pollData.status ===
-          'failed'
-      ) {
-        clearInterval(
-          pollInterval
-        );
-
-        throw new Error(
-          'Генерация не удалась'
-        );
-      }
-
-      // Красивый loading
-      resDiv.textContent =
-        loadingTexts[
-          Math.min(
-            attempts %
-              loadingTexts.length,
-            loadingTexts.length -
-              1
-          )
-        ];
-
-      // защита от бесконечного ожидания
-      if (
-        attempts > 30
-      ) {
-        clearInterval(
-          pollInterval
-        );
-
-        throw new Error(
-          'Генерация заняла слишком много времени'
-        );
-      }
-    } catch (e) {
-      clearInterval(
-        pollInterval
-      );
-
-      resDiv.className =
-        'dynamic-response';
-
-      resDiv.textContent =
-        'Ошибка: ' +
-        e.message;
     }
-  }, 3000);
 
+    const taskId =
+      initData.taskId;
+
+    // 2. Polling
+    const pollInterval =
+      setInterval(
+        async () => {
+          try {
+            attempts++;
+
+            const pollRes =
+              await fetch(
+                `/stylist-status?task_id=${taskId}`
+              );
+
+            const pollData =
+              await pollRes.json();
+
+            console.log(
+              'POLL:',
+              pollData
+            );
+
+            // ГОТОВО
+            if (
+              pollData.status ===
+                'completed' &&
+              pollData.image
+            ) {
+              clearInterval(
+                pollInterval
+              );
+
+              resImg.src =
+                pollData.image;
+
+              resImg.style.display =
+                'block';
+
+              resDiv.style.display =
+                'none';
+
+              // разблок кнопки
+              generateBtn.disabled =
+                false;
+
+              generateBtn.style.opacity =
+                '1';
+
+              generateBtn.textContent =
+                'Подобрать макияж ✨';
+
+              return;
+            }
+
+            // Ошибка
+            if (
+              pollData.status ===
+                'failed'
+            ) {
+              clearInterval(
+                pollInterval
+              );
+
+              throw new Error(
+                'Генерация не удалась'
+              );
+            }
+
+            // Loading текст
+            resDiv.textContent =
+              loadingTexts[
+                attempts %
+                  loadingTexts.length
+              ];
+
+            // Таймаут
+            if (
+              attempts > 30
+            ) {
+              clearInterval(
+                pollInterval
+              );
+
+              throw new Error(
+                'Генерация заняла слишком много времени'
+              );
+            }
+          } catch (e) {
+            clearInterval(
+              pollInterval
+            );
+
+            // вернуть кнопку
+            generateBtn.disabled =
+              false;
+
+            generateBtn.style.opacity =
+              '1';
+
+            generateBtn.textContent =
+              'Подобрать макияж ✨';
+
+            resDiv.className =
+              'dynamic-response';
+
+            resDiv.textContent =
+              'Ошибка: ' +
+              e.message;
+          }
+        },
+        3000
+      );
   } catch (e) {
-    resDiv.className = 'dynamic-response'; 
-    resDiv.textContent = "Ошибка: " + e.message;
+    // вернуть кнопку
+    generateBtn.disabled =
+      false;
+
+    generateBtn.style.opacity =
+      '1';
+
+    generateBtn.textContent =
+      'Подобрать макияж ✨';
+
+    resDiv.className =
+      'dynamic-response';
+
+    resDiv.textContent =
+      'Ошибка: ' +
+      e.message;
   }
 }
 
