@@ -9,7 +9,8 @@ export async function onRequestGet(context) {
       {
         status: 500,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type":
+            "application/json"
         }
       }
     );
@@ -17,7 +18,9 @@ export async function onRequestGet(context) {
 
   try {
     const url = new URL(context.request.url);
-    const taskId = url.searchParams.get("task_id");
+
+    const taskId =
+      url.searchParams.get("task_id");
 
     if (!taskId) {
       return new Response(
@@ -27,7 +30,8 @@ export async function onRequestGet(context) {
         {
           status: 400,
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type":
+              "application/json"
           }
         }
       );
@@ -52,7 +56,7 @@ export async function onRequestGet(context) {
     const status =
       data.status?.toLowerCase();
 
-    // Успешная генерация
+    // Генерация завершена
     if (
       [
         "completed",
@@ -63,13 +67,13 @@ export async function onRequestGet(context) {
       ].includes(status)
     ) {
       const imageUrl =
-  data.data?.[0]?.url ||
-  data.output?.url ||
-  data.result?.url ||
-  data.images?.[0]?.url ||
-  data.outputs?.[0]?.url ||
-  data.url ||
-  null;
+        data.data?.[0]?.url ||
+        data.output?.url ||
+        data.result?.url ||
+        data.images?.[0]?.url ||
+        data.outputs?.[0]?.url ||
+        data.url ||
+        null;
 
       return new Response(
         JSON.stringify({
@@ -116,7 +120,11 @@ export async function onRequestGet(context) {
         error: e.message
       }),
       {
-        status: 500
+        status: 500,
+        headers: {
+          "Content-Type":
+            "application/json"
+        }
       }
     );
   }
