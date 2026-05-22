@@ -615,6 +615,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     <button class="btn-primary" style="max-width: 300px; margin-top: 20px;" onclick="submitStylist()">Подобрать макияж ✨</button>
     
         <img id="stylistResultImg" src="" style="display: none; width: 100%; max-width: 300px; border-radius: 16px; margin-top: 20px; border: 0.5px solid var(--border);">
+	  <button
+  id="saveMakeupBtn"
+  class="btn-primary"
+  style="display:none; margin-top:12px;"
+>
+  💾 Сохранить фото
+</button>
     <div id="stylistResult" class="dynamic-response" style="margin-top: 20px; max-width: 300px; width: 100%;"></div>
 	
   </div>
@@ -1213,6 +1220,10 @@ async function submitStylist() {
     document.getElementById(
       'stylistResultImg'
     );
+	const saveBtn =
+  document.getElementById(
+    'saveMakeupBtn'
+  );
 
   // КНОПКА
   const generateBtn =
@@ -1231,6 +1242,8 @@ async function submitStylist() {
 
   resImg.style.display =
     'none';
+	saveBtn.style.display =
+  'none';
 
   resDiv.style.display =
     'block';
@@ -1320,6 +1333,33 @@ async function submitStylist() {
 
               resDiv.style.display =
                 'none';
+				
+				// показать кнопку сохранить
+saveBtn.style.display =
+  'block';
+
+// скачать фото
+saveBtn.onclick =
+  function () {
+    const link =
+      document.createElement('a');
+
+    link.href =
+      pollData.image;
+
+    link.download =
+      'beauty-makeup.png';
+
+    document.body.appendChild(
+      link
+    );
+
+    link.click();
+
+    document.body.removeChild(
+      link
+    );
+  };
 
               // разблок кнопки
               generateBtn.disabled =
