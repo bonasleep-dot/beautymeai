@@ -1,16 +1,12 @@
-// functions/generate.js
 export async function onRequestPost(context) {
-  // В Cloudflare переменные окружения лежат в context.env
-  const apiKey = context.env.GROQ_API_KEY; 
+  const apiKey = context.env.POLZA_AI_API_KEY; 
   if (!apiKey) { 
-    return new Response(JSON.stringify({ error: "GROQ API ключ не настроен на сервере" }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
+    return new Response(JSON.stringify({ error: "API ключ не настроен" }), {
+      status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }
 
   try {
-    // В Cloudflare тело запроса — это стандартный Request, читаем через .json()
     const { profile } = await context.request.json();
     
     const SYSTEM_PROMPT = `Ты — профессиональный AI-beauty консультант. Твоя задача — проанализировать профиль кожи пользователя и выдать результат в формате JSON.
@@ -45,14 +41,14 @@ export async function onRequestPost(context) {
   "avoid": "Что категорически не использовать"
 }`;
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const response = await fetch('https://polza.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: "google/gemini-3.5-flash",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: `Подбери уход для профиля:\n\n${profile}` }
@@ -64,22 +60,19 @@ export async function onRequestPost(context) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error?.message || `Ошибка API Groq: ${response.status}`);
+      throw new Error(errorData.error?.message || `Ошибка API`);
     }
 
     const data = await response.json();
     const text = data.choices[0]?.message?.content || '';
-    
     const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
     
-    // Возвращаем стандартный Response
     return new Response(JSON.stringify({ result: cleanJson }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (error) {
-    console.error(error);
     return new Response(JSON.stringify({ error: "Ошибка AI: " + error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

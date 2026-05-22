@@ -1,48 +1,102 @@
 export async function onRequestPost(context) {
+  const apiKey = context.env.POLZA_AI_API_KEY;
+
+  if (!apiKey) {
+    return new Response(
+      JSON.stringify({
+        error: "API ключ не настроен"
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+  }
+
   try {
-    const { image_base64, outfit_text } = await context.request.json();
+    const { image_base64, outfit_text } =
+      await context.request.json();
+
     if (!image_base64 || !outfit_text) {
-      return new Response(JSON.stringify({ error: 'Нет фото или описания' }), { status: 400 });
+      return new Response(
+        JSON.stringify({
+          error: "Нет фото или описания"
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
     }
 
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${context.env.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
-        messages: [
-          {
-            role: 'system',
-            content: 'Ты профессиональный beauty-стилист. Отвечай ИСКЛЮЧИТЕЛЬНО на русском языке. Запрещено использовать китайские иероглифы, англицизмы или любые другие языки. Пиши только кириллицей.'
-          },
-          {
-            role: 'user',
-            content: [
-              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${image_base64}` } },
-              { type: 'text', text: `На фото лицо девушки. Она собирается: "${outfit_text}". Опираясь на черты её лица и цветотип, дай краткие пошаговые рекомендации по макияжу: какой тон, акценты на глазах или губах, текстуры. Формат: 1. Тон, 2. Глаза, 3. Губы, 4. Главный акцент. Пиши дружелюбно с эмодзи.` }
+    const response = await fetch(
+      "https://polza.ai/api/v1/media",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3.1-flash-image-preview",
+
+          // ВАЖНО: асинхронная генерация
+          async: true,
+
+          input: {
+            prompt: `Нанеси фотореалистичный макияж на это лицо. Образ: "${outfit_text}". Сохрани естественные черты лица, цвет глаз и прическу. Макияж должен гармонировать с одеждой. Верни измененное фото.`,
+
+            image_resolution: "1K",
+            output_format: "jpeg",
+
+            images: [
+              {
+                type: "url",
+                data: `data:image/jpeg;base64,${image_base64}`
+              }
             ]
           }
-        ],
-        max_tokens: 500,
-        temperature: 0.7
-      })
-    });
+        })
+      }
+    );
 
-    const groqData = await groqRes.json();
-    
-    if (!groqData.choices || !groqData.choices[0]) {
-      const errMsg = groqData.error?.message || 'Неизвестная ошибка Groq API';
-      throw new Error(errMsg);
+    const data = await response.json();
+
+    console.log(
+      "POLZA CREATE:",
+      JSON.stringify(data, null, 2)
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        data.error?.message ||
+          "Ошибка запуска генерации"
+      );
     }
 
-    return new Response(JSON.stringify({ reply: groqData.choices[0].message.content }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
-
+    return new Response(
+      JSON.stringify({
+        taskId: data.id,
+        raw: data
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    return new Response(
+      JSON.stringify({
+        error: e.message
+      }),
+      {
+        status: 500
+      }
+    );
   }
 }
