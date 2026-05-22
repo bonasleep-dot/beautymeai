@@ -17,15 +17,20 @@ export async function onRequestGet(context) {
   }
 
   try {
-    const url = new URL(context.request.url);
+    const url = new URL(
+      context.request.url
+    );
 
     const taskId =
-      url.searchParams.get("task_id");
+      url.searchParams.get(
+        "task_id"
+      );
 
     if (!taskId) {
       return new Response(
         JSON.stringify({
-          error: "Нет task_id"
+          error:
+            "Нет task_id"
         }),
         {
           status: 400,
@@ -41,30 +46,38 @@ export async function onRequestGet(context) {
       `https://polza.ai/api/v1/media/${taskId}`,
       {
         headers: {
-          Authorization: `Bearer ${apiKey}`
+          Authorization:
+            `Bearer ${apiKey}`
         }
       }
     );
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     console.log(
       "POLZA STATUS:",
-      JSON.stringify(data, null, 2)
+      JSON.stringify(
+        data,
+        null,
+        2
+      )
     );
 
     const status =
-  data.status?.toLowerCase();
+      data.status?.toLowerCase();
 
-const processingStatuses = [
-  "pending",
-  "processing",
-  "queued",
-  "running",
-  "starting"
-];
+    // Статусы, когда генерация ещё идёт
+    const processingStatuses =
+      [
+        "pending",
+        "processing",
+        "queued",
+        "running",
+        "starting"
+      ];
 
-    // Генерация завершена
+    // Успешная генерация
     if (
       [
         "completed",
@@ -83,22 +96,35 @@ const processingStatuses = [
         data.url ||
         null;
 
-      if (
-  processingStatuses.includes(status)
-) {
-  return new Response(
-    JSON.stringify({
-      status: "processing",
-      raw: data
-    }),
-    {
-      headers: {
-        "Content-Type":
-          "application/json"
-      }
+      return new Response(
+        JSON.stringify({
+          status:
+            "completed",
+          image:
+            imageUrl,
+          raw: data
+        }),
+        {
+          headers: {
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
     }
-  );
-}
+
+    // Генерация всё ещё идёт
+    if (
+      processingStatuses.includes(
+        status
+      )
+    ) {
+      return new Response(
+        JSON.stringify({
+          status:
+            "processing",
+          raw: data
+        }),
         {
           headers: {
             "Content-Type":
@@ -119,10 +145,11 @@ const processingStatuses = [
       );
     }
 
-    // Всё ещё генерируется
+    // fallback
     return new Response(
       JSON.stringify({
-        status: "processing",
+        status:
+          "processing",
         raw: data
       }),
       {
@@ -135,7 +162,8 @@ const processingStatuses = [
   } catch (e) {
     return new Response(
       JSON.stringify({
-        error: e.message
+        error:
+          e.message
       }),
       {
         status: 500,
