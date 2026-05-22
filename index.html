@@ -614,7 +614,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
     <button class="btn-primary" style="max-width: 300px; margin-top: 20px;" onclick="submitStylist()">Подобрать макияж ✨</button>
     
+        <img id="stylistResultImg" src="" style="display: none; width: 100%; max-width: 300px; border-radius: 16px; margin-top: 20px; border: 0.5px solid var(--border);">
     <div id="stylistResult" class="dynamic-response" style="margin-top: 20px; max-width: 300px; width: 100%;"></div>
+	
   </div>
 </div>
 
@@ -1187,33 +1189,52 @@ async function submitStylist() {
   if (!window.stylistPhotoBase64) { alert('Загрузите фото!'); return; }
 
   const resDiv = document.getElementById('stylistResult');
-  resDiv.style.display = 'block'; resDiv.className = 'dynamic-response loading'; resDiv.textContent = 'Подбираю макияж...';
+  const resImg = document.getElementById('stylistResultImg');
+  resImg.style.display = 'none'; 
+  resDiv.style.display = 'block'; resDiv.className = 'dynamic-response loading'; 
+  resDiv.textContent = 'Генерирую макияж (займет 15-30 сек)... ⏳';
 
   try {
-    const res = await fetch('/stylist', {
+    // 1. Запускаем генерацию
+    const initRes = await fetch('/stylist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image_base64: window.stylistPhotoBase64, outfit_text: outfitText })
     });
-
-    // Читаем ответ как текст, чтобы не упасть, если сервер вернул HTML-ошибку
-    const text = await res.text();
     
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      throw new Error(`Сервер вернул не JSON: ${text.substring(0, 200)}`);
-    }
-
-    if (!res.ok) throw new Error(data.error || `Ошибка сервера: ${res.status}`);
+    const initData = await initRes.json();
+    if (!initRes.ok) throw new Error(initData.error || 'Ошибка старта');
     
-    resDiv.className = 'dynamic-response'; 
-    resDiv.innerHTML = data.reply.replace(/\n/g, '<br>');
+    const taskId = initData.taskId;
+
+    // 2. Опрашиваем статус каждые 3 секунды
+    const pollInterval = setInterval(async () => {
+      try {
+        const pollRes = await fetch(`/stylist-status?task_id=${taskId}`);
+        const pollData = await pollRes.json();
+        
+        if (pollData.status === 'completed' && pollData.image) {
+          clearInterval(pollInterval);
+          resImg.src = pollData.image;
+          resImg.style.display = 'block';
+          resDiv.style.display = 'none';
+        } else if (pollData.status === 'failed') {
+          clearInterval(pollInterval);
+          throw new Error('Генерация не удалась');
+                } else {
+          // Показываем сырой ответ, чтобы найти ссылку на картинку
+          resDiv.textContent = `Статус: ${pollData.status}... Ждем ⏳\n\nRaw: ${JSON.stringify(pollData).substring(0, 500)}`;
+        }
+      } catch (e) {
+        clearInterval(pollInterval);
+        resDiv.className = 'dynamic-response'; 
+        resDiv.textContent = "Ошибка: " + e.message;
+      }
+    }, 3000);
 
   } catch (e) {
     resDiv.className = 'dynamic-response'; 
-    resDiv.textContent = "Ошибка: " + e.message; // Теперь покажет всё
+    resDiv.textContent = "Ошибка: " + e.message;
   }
 }
 
