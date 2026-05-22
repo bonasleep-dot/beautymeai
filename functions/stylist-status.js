@@ -54,7 +54,15 @@ export async function onRequestGet(context) {
     );
 
     const status =
-      data.status?.toLowerCase();
+  data.status?.toLowerCase();
+
+const processingStatuses = [
+  "pending",
+  "processing",
+  "queued",
+  "running",
+  "starting"
+];
 
     // Генерация завершена
     if (
@@ -75,12 +83,22 @@ export async function onRequestGet(context) {
         data.url ||
         null;
 
-      return new Response(
-        JSON.stringify({
-          status: "completed",
-          image: imageUrl,
-          raw: data
-        }),
+      if (
+  processingStatuses.includes(status)
+) {
+  return new Response(
+    JSON.stringify({
+      status: "processing",
+      raw: data
+    }),
+    {
+      headers: {
+        "Content-Type":
+          "application/json"
+      }
+    }
+  );
+}
         {
           headers: {
             "Content-Type":
